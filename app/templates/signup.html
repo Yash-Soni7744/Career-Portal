@@ -1,0 +1,26 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | KRMU</title>
+    <script src="https://www.google.com/recaptcha/api.js?render=6LfTQOgnAAAAAPUKwxk5C_ZQNIi__k7HGTzbi3Yw" defer></script>
+    <script src="/static/js/recaptcha.js" defer></script>
+
+</head>
+<body>
+
+    <div class="alert alert-danger" role="alert" id="alert">
+        <p id="alert-text" style="display: none;"></p>
+    </div>
+
+    <h1>Sign Up</h1>
+    <form action="/signup" method="POST">
+        <input type="email" id="email" name="email" required autofocus placeholder="E.g. xxxxxxxxxx@krmu.edu.in">
+        <input type="password" id="password" name="password" required placeholder="Enter a strong password">
+        <button type="submit" onclick="event.preventDefault(); submitResponse()" id="submit-button">Sign Up</button>
+    </form>
+    <a href="/login">Already have an account? Login</a>
+    
+</body>
+</html>

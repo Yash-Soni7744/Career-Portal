@@ -1,11 +1,10 @@
-@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700");
+@import url('https://fonts.googleapis.com/css?family=Manrope:400,500,600,700&display=swap');
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Roboto", sans-serif;
-  background-color: aliceblue;
+  font-family: "Manrope", sans-serif;
 }
 
 body {

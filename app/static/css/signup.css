@@ -1,0 +1,25 @@
+main {
+    width: 60%;
+    height: 70%;
+    background-color: None;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+}
+
+.left-div {
+    width: 50%;
+    height: 100%;
+    float: left;
+    background-color: linear-gradient(180deg, #00BFFF 0%, #00FFFF 100%);
+    border-radius: 10px 0 0 10px;
+}
+
+.right-div {
+    width: 50%;
+    height: 100%;
+    float: right;
+    background-color: #fff;
+    border-radius: 0 10px 10px 0;
+}
+/* Rectangle 2 */
+

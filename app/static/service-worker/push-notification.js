@@ -47,13 +47,11 @@ self.addEventListener("push", function (event) {
     body: body,
     icon: "/static/images/logo-circular.png",
     badge: "/static/images/favicon.ico",
-    image: data.image_url,
     vibrate: [100, 200, 100],
     action: [
       {
         action: "view",
         title: "Apply Now",
-        icon: data.image_url,
       },
     ],
 

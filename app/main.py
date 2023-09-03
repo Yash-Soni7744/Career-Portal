@@ -215,7 +215,6 @@ def send_notification():
         "notification_created_at": functions.get_current_timestamp(),
         "id": secrets.token_hex(16),
         "ttl": 86400,
-        "image_url": "https://gyanvaan.com/wp-content/uploads/2023/05/Hot-Girl-Photo-Dp-2.jpg"
     }
 
 

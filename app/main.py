@@ -246,11 +246,10 @@ def push_notification_subscribe():
         return jsonify({"success": False, "message": "Invalid subscription data"}), 400
     if MONGODB_DB["users"].find_one({"user_email": session["user_email"]}) is None:
         return jsonify({"success": False, "message": "User not found"}), 400
-    user = MONGODB_DB["users"].find_one({"user_email": session["user_email"]})
-    user["user_push_subscription"].append(data)
+    MONGODB_DB["users"].update_one({"user_email": session["user_email"]}, {"$push": {"user_push_subscription": data}})
     return jsonify({"success": True, "message": "User subscribed to push notifications successfully"}), 200
 
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0/0", port=5000)
+    app.run(debug=True, host="0.0.0.0", port=5000)

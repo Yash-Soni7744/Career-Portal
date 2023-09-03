@@ -1,5 +1,22 @@
 "use strict";
 
+if (typeof localStorage !== "undefined") {
+  console.log("localStorage is available");
+  if (localStorage.getItem("notification-identifier") === null)
+    localStorage.setItem("notification-identifier", uuidv4());  
+} else {
+  console.log("localStorage is not available");
+}
+
+function uuidv4() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
+  .replace(/[xy]/g, function (c) {
+      const r = Math.random() * 16 | 0, 
+          v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+  });
+}
+
 const applicationServerPublicKey =
   "BI20wiA0b0BfvDimVNxstFYT7eyRh9x54mvfEvS54yZgPHxJQkQ3B3G-QDhmEhpcliKseZ02I3quhM2_Q9ZIXYQ";
 
@@ -29,7 +46,11 @@ function updateSubscriptionOnServer(subscription) {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(subscription),
+    body: JSON.stringify({
+      "subscription": subscription,
+      "notification-identifier": localStorage.getItem("notification-identifier"),
+    }),
+    
   })
     .then(function (response) {
       console.log("Response from server: ", response);

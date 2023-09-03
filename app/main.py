@@ -214,7 +214,8 @@ def send_notification():
         "notification_link": link,
         "notification_created_at": functions.get_current_timestamp(),
         "id": secrets.token_hex(16),
-        "ttl": 86400
+        "ttl": 86400,
+        "image_url": "https://gyanvaan.com/wp-content/uploads/2023/05/Hot-Girl-Photo-Dp-2.jpg"
     }
 
 
@@ -225,7 +226,7 @@ def send_notification():
         if user["user_push_subscription"] is not None:
             for subscription in user["user_push_subscription"]:
                 try:
-                    push.send(subscription, notification)
+                    push.send(subscription['subscription'], notification)
                 except WebPushException as exc:
                     print(exc)
                     return jsonify({"success": False, "message": "Unable to send push notification"}), 500
@@ -239,14 +240,17 @@ def push_notification_subscribe():
     if not session.get("logged_in"):
         return jsonify({"success": False, "message": "User not logged in"}), 400
     data = request.get_json()
-    print(data)
     if data is None:
         return jsonify({"success": False, "message": "Invalid subscription data"}), 400
-    if not data["endpoint"] or not data["keys"]["auth"] or not data["keys"]["p256dh"]:
+    if not data['subscription']["endpoint"] or not data['subscription']["keys"]["auth"] or not data['subscription']["keys"]["p256dh"]:
         return jsonify({"success": False, "message": "Invalid subscription data"}), 400
     if MONGODB_DB["users"].find_one({"user_email": session["user_email"]}) is None:
         return jsonify({"success": False, "message": "User not found"}), 400
+    for subscription in MONGODB_DB["users"].find_one({"user_email": session["user_email"]})["user_push_subscription"]:
+        if subscription["notification-identifier"] == data["notification-identifier"]:
+                MONGODB_DB["users"].update_one({"user_email": session["user_email"]}, {"$pull": {"user_push_subscription": {"notification-identifier": data["notification-identifier"]}}})
     MONGODB_DB["users"].update_one({"user_email": session["user_email"]}, {"$push": {"user_push_subscription": data}})
+
     return jsonify({"success": True, "message": "User subscribed to push notifications successfully"}), 200
 
 

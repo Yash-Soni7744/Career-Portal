@@ -1,43 +1,90 @@
-// Check if the browser supports service workers
-if ('serviceWorker' in navigator && 'PushManager' in window) {
-    navigator.serviceWorker.register('/static/service-worker/push-notification.js') // Register the service worker
-        .then(function(registration) {
-            console.log('Service Worker registered with scope:', registration.scope);
-        })
-        .catch(function(error) {
-            console.error('Service Worker registration failed:', error);
-        });
+"use strict";
+
+function urlB64ToUint8Array(base64String) {
+  const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding)
+    .replace(/\-/g, "+")
+    .replace(/_/g, "/");
+
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
 }
 
-document.getElementById('subscribe').addEventListener('click', subscribeUser);
+function updateSubscriptionOnServer(subscription, apiEndpoint) {
+  // TODO: Send subscription to application server
 
-// Function to subscribe the user to push notifications
-function subscribeUser() {
-    navigator.serviceWorker.ready.then(function(registration) {
-        return registration.pushManager.subscribe({ userVisibleOnly: true });
-    }).then(function(subscription) {
-        // Send the subscription data to your server
-        sendSubscriptionToServer(subscription);
-        console.log('User is subscribed:', subscription);
-    }).catch(function(error) {
-        console.error('Subscription failed:', error);
+  return fetch(apiEndpoint, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      subscription_json: JSON.stringify(subscription),
+    }),
+  });
+}
+
+function subscribeUser(
+  swRegistration,
+  applicationServerPublicKey,
+  apiEndpoint
+) {
+  const applicationServerKey = urlB64ToUint8Array(applicationServerPublicKey);
+  swRegistration.pushManager
+    .subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: applicationServerKey,
+    })
+    .then(function (subscription) {
+      console.log("User is subscribed.");
+
+      return updateSubscriptionOnServer(subscription, apiEndpoint);
+    })
+    .then(function (response) {
+      if (!response.ok) {
+        throw new Error("Bad status code from server.");
+      }
+      return response.json();
+    })
+    .then(function (responseData) {
+      console.log(responseData);
+      if (responseData.status !== "success") {
+        throw new Error("Bad response from server.");
+      }
+    })
+    .catch(function (err) {
+      console.log("Failed to subscribe the user: ", err);
+      console.log(err.stack);
     });
 }
 
-// Function to send the subscription data to your server
-function sendSubscriptionToServer(subscription) {
-    // Send a POST request to your Flask server to store the subscription
-    fetch('/api/push-notification/subscribe', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ subscription }),
-    }).then(function(response) {
-        if (!response.ok) {
-            console.error('Failed to store subscription on the server.');
-        }
-    }).catch(function(error) {
-        console.error('Error sending subscription to server:', error);
-    });
+function registerServiceWorker(
+  serviceWorkerUrl = "/static/service-worker/push-notification.js",
+  applicationServerPublicKey = "BI20wiA0b0BfvDimVNxstFYT7eyRh9x54mvfEvS54yZgPHxJQkQ3B3G-QDhmEhpcliKseZ02I3quhM2_Q9ZIXYQ",
+  apiEndpoint = "/api/push-notification/subscribe"
+) {
+  let swRegistration = null;
+  if ("serviceWorker" in navigator && "PushManager" in window) {
+    console.log("Service Worker and Push is supported");
+
+    navigator.serviceWorker
+      .register(serviceWorkerUrl)
+      .then(function (swReg) {
+        console.log("Service Worker is registered", swReg);
+        subscribeUser(swReg, applicationServerPublicKey, apiEndpoint);
+
+        swRegistration = swReg;
+      })
+      .catch(function (error) {
+        console.error("Service Worker Error", error);
+      });
+  } else {
+    console.warn("Push messaging is not supported");
+  }
+  return swRegistration;
 }

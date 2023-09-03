@@ -237,7 +237,6 @@ def send_notification():
 def push_notification_subscribe():
     if not session.get("logged_in"):
         return jsonify({"success": False, "message": "User not logged in"}), 400
-    data = request.get_json()
     print(data)
     if data is None:
         return jsonify({"success": False, "message": "Invalid subscription data"}), 400
@@ -251,4 +250,4 @@ def push_notification_subscribe():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0/0", port=5000)

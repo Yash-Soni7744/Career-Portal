@@ -39,6 +39,7 @@ self.addEventListener("push", function (event) {
   try {
     title = data.notification_title;
     body = data.notification_body;
+    image = data.image_url;
   } catch (e) {
     console.log(e);
   }
@@ -51,7 +52,7 @@ self.addEventListener("push", function (event) {
     action: [
       {
         action: "view",
-        title: "View",
+        title: "Apply Now",
         icon: data.image_url,
       },
     ],

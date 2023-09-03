@@ -33,7 +33,6 @@ self.addEventListener("activate", function (event) {
 self.addEventListener("push", function (event) {
   console.log("[Service Worker] Push Received.");
   const pushData = event.data.text();
-  console.log(`[Service Worker] Push received this data - "${pushData}"`);
   let data, title, body;
   data = JSON.parse(pushData);
   try {
@@ -61,7 +60,6 @@ self.addEventListener("push", function (event) {
       url: data.notification_link,
     },
   };
-  console.log(title, options);
 
   event.waitUntil(self.registration.showNotification(title, options));
 });

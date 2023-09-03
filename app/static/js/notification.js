@@ -53,7 +53,6 @@ function updateSubscriptionOnServer(subscription) {
     
   })
     .then(function (response) {
-      console.log("Response from server: ", response);
       if (response.ok) {
         console.log("Subscription updated on server");
       }
@@ -73,7 +72,7 @@ function subscribeUser() {
     .then(function (subscription) {
       console.log("User is subscribed, sending subscription to server");
 
-      console.log("User is subscribed: ", subscription)
+      console.log("User is now subscribed.");
 
       updateSubscriptionOnServer(subscription);
 
@@ -119,7 +118,7 @@ if ("serviceWorker" in navigator && "PushManager" in window) {
   navigator.serviceWorker
     .register("/static/service-worker/push-notification.js")
     .then(function (swReg) {
-      console.log("Service Worker is registered", swReg);
+      console.log("Service Worker is registered");
 
       swRegistration = swReg;
       initializeUI();

@@ -31,9 +31,21 @@ limiter = Limiter(
     storage_uri="memory://"
 )
 
+@app.route("/")
+@limiter.limit("10 per minute")
+def index():
+    """ This function handles the logic for the index page
+
+    Returns:
+        _type_: flask.redirect
+    """
+    if not session.get("logged_in"):
+        return redirect(url_for("signin"))
+    return redirect(url_for("dashboard"))
+
 
 @app.route("/sign-up", methods=["GET", "POST"])
-@limiter.limit("20000000 per hour")
+@limiter.limit("10 per minute")
 def signup():
     """ This function handles the logic for signing up a new user
 
@@ -71,10 +83,13 @@ def signup():
 
         if not functions.verify_recaptcha(recaptcha_token):
             return jsonify({"success": False, "message": "Suspicious activity detected, try again later or contact support"}), 400
+        
+        if MONGODB_DB["student_info"].find_one({"email": user_email}) is None:
+            return jsonify({"success": False, "message": "This email is not registered with KRMU"}), 400
 
-        if MONGODB_DB["users"].find_one({"email": user_email}):
-            return jsonify({"success": False, "message": "This email address is already registered with us"}), 400
-
+        if MONGODB_DB["users"].find_one({"user_email": user_email}):
+            return jsonify({"success": False, "message": "This email address is already registered with us, try logging in"}), 400
+        
         hashed_password = functions.hash_password(user_password)
 
         if not functions.send_email(user_email, "verify_new_user"):
@@ -90,7 +105,7 @@ def signup():
             "user_created_at": functions.get_current_timestamp(),
             "user_role": "student",
             "user_profile": {
-                "user_name": MONGODB_DB["student_info"].find_one({"roll_no": user_email.split("@")[0]})["name"] if MONGODB_DB["student_info"].find_one({"roll_no": user_email.split("@")[0]}) else user_email.split("@")[0],
+                "user_name": MONGODB_DB["student_info"].find_one({"email": user_email})["name"] if MONGODB_DB["student_info"].find_one({"email": user_email}) else user_email.split("@")[0],
                 "user_branch": MONGODB_DB["student_info"].find_one({"email": user_email})["branch"] if MONGODB_DB["student_info"].find_one({"email": user_email}) else "Not Available",
                 "user_year": MONGODB_DB["student_info"].find_one({"email": user_email})["year"] if MONGODB_DB["student_info"].find_one({"email": user_email}) else "Not Available",
                 "user_roll_no": MONGODB_DB["student_info"].find_one({"email": user_email})["roll_no"] if MONGODB_DB["student_info"].find_one({"email": user_email}) else "Not Available",
@@ -107,7 +122,78 @@ def signup():
             ]
         })
 
-        return jsonify({"success": True, "message": "User created successfully"}), 201
+        return jsonify({"success": True, "message": "User created successfully"}), 200
+
+
+@app.route("/login", methods=["GET", "POST"])
+@app.route("/sign-in", methods=["GET", "POST"])
+@limiter.limit("10 per minute")
+def signin():
+    """ This function handles the logic for logging in a user
+
+    Returns:
+        _type_: flask.render_template or flask.redirect or flask.jsonify
+    """
+    if request.method == "GET":
+        if session.get("logged_in"):
+            return redirect(url_for("index"))
+        return render_template("signin.html")
+    else:
+        if session.get("logged_in"):
+            return redirect(url_for("index"))
+        data = request.get_json()
+
+        user_email = data["email"].lower()
+        user_password = data["password"]
+        recaptcha_token = data["recaptcha_token"]
+
+        if not user_email or not user_password:
+            return jsonify({"success": False, "message": "Email and password are required"}), 400
+
+        if "@" not in user_email:
+            return jsonify({"success": False, "message": "Invalid email address"}), 400
+        try:
+            if user_email.split("@")[1] != "krmu.edu.in":
+                return jsonify({"success": False, "message": "Only K.R. Mangalam University email addresses are allowed"}), 400
+        except IndexError:
+            return jsonify({"success": False, "message": "Only K.R. Mangalam University email addresses are allowed"}), 400
+
+        session["user_email"] = user_email
+
+        if not functions.verify_recaptcha(recaptcha_token):
+            return jsonify({"success": False, "message": "Suspicious activity detected, try again later or contact support"}), 400
+
+        if MONGODB_DB["users"].find_one({"user_email": user_email}) is None:
+            return jsonify({"success": False, "message": "This email address is not registered with us, try signing up"}), 400
+
+        if not functions.verify_hashed_password(user_password, MONGODB_DB["users"].find_one({"user_email": user_email})["user_hashed_password"]):
+            return jsonify({"success": False, "message": "Incorrect email address or password combination"}), 400
+
+        if not MONGODB_DB["users"].find_one({"user_email": user_email})["email_verified"]:
+            return jsonify({"success": False, "message": "Email not verified, check your inbox for verification email"}), 400
+        
+        session["logged_in"] = True
+        session["user_role"] = MONGODB_DB["users"].find_one({"user_email": user_email})["user_role"]
+        session["user_email"] = user_email
+        session["user_name"] = MONGODB_DB["users"].find_one({"user_email": user_email})["user_profile"]["user_name"]
+        session["user_branch"] = MONGODB_DB["users"].find_one({"user_email": user_email})["user_profile"]["user_branch"]
+        session["user_year"] = MONGODB_DB["users"].find_one({"user_email": user_email})["user_profile"]["user_year"]
+
+
+        return jsonify({"success": True, "message": "User logged in successfully"}), 200
+
+@app.route("/dashboard")
+@limiter.limit("10 per minute")
+def dashboard():
+    if not session.get("logged_in"):
+        return redirect(url_for("signin"))
+    return render_template("dashboard.html")
+
+@app.route("/api/push-notification/subscribe", methods=["POST"])
+@limiter.limit("10 per minute")
+def push_notification_subscribe():
+    print(request.get_json())
+    return jsonify({"success": True, "message": "User subscribed to push notifications successfully"}), 200
 
 
 if __name__ == "__main__":

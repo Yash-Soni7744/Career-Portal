@@ -162,8 +162,7 @@ main {
     letter-spacing: -0.01em;
     text-align: right;
     line-height: 1.2;
-    margin-top: 5px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     text-decoration: none;
     background: linear-gradient(90deg, #0057FF 0%, #E800FC 94.03%);
     /* This makes the text transparent */
@@ -185,7 +184,6 @@ main {
     text-align: center;
     line-height: 1.2;
     cursor: pointer;
-    margin-top: 10px;
     margin-bottom: 10px;
     color: #FFFFFF;
 }

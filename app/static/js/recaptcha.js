@@ -9,27 +9,28 @@ function submitResponse() {
         var password = document.getElementById("password").value;
 
         if (email == "" || password == "") {
+          alertText.classList.add("error-text");
           alertText.innerHTML = "Email adress or password is missing";
-          alertText.style.display = "block";
-          return;
-        }
-
-        if (password.length < 8) {
-          alertText.innerHTML = "Password must be at least 8 characters long";
-          alertText.style.display = "block";
           return;
         }
 
         if (!email.includes("@") || !email.includes(".")) {
-            alertText.innerHTML = "Email adress is not valid";
-            alertText.style.display = "block";
-            return;
+          alertText.classList.add("error-text");
+          alertText.innerHTML = "Email adress is not valid";
+          return;
         }
 
         if (email.split("@")[1] != "krmu.edu.in") {
-            alertText.innerHTML = "Only K.R. Mangalam University email addresses are allowed";
-            alertText.style.display = "block";
-            return;
+          alertText.classList.add("error-text");
+          alertText.innerHTML =
+            "Only university email addresses are allowed";
+          return;
+        }
+
+        if (password.length < 8) {
+          alertText.classList.add("error-text");
+          alertText.innerHTML = "Password must be at least 8 characters long";
+          return;
         }
 
         var data = {
@@ -56,15 +57,14 @@ function submitResponse() {
               window.location.href = "/dashboard";
             } else {
               response.json().then(function (data) {
-                console.log(data);
+                alertText.classList.add("error-text");
                 alertText.innerHTML = data.message;
-                alertText.style.display = "block";
               });
             }
           })
           .catch(function (error) {
+            alertText.classList.add("error-text");
             alertText.innerHTML = error;
-            alertText.style.display = "block";
           })
           .finally(function () {
             submitButton.innerHTML = submitButtonText;

@@ -223,13 +223,14 @@ def send_notification():
     users = MONGODB_DB["users"].find()
     for user in users:
         if user["user_push_subscription"] is not None:
-            subscription = user["user_push_subscription"]
-            try:
-                push.send(subscription, notification)
-            except WebPushException as exc:
-                print(exc)
-                return jsonify({"success": False, "message": "Unable to send push notification"}), 500
-    return jsonify({"success": True, "message": "Notification sent successfully"}), 200
+            for subscription in user["user_push_subscription"]:
+                try:
+                    push.send(subscription, notification)
+                except WebPushException as exc:
+                    print(exc)
+                    return jsonify({"success": False, "message": "Unable to send push notification"}), 500
+        return jsonify({"success": True, "message": "Notification sent successfully"}), 200
+    
 
 
 @app.route("/api/push-notification/subscribe", methods=["POST"])
@@ -237,6 +238,7 @@ def send_notification():
 def push_notification_subscribe():
     if not session.get("logged_in"):
         return jsonify({"success": False, "message": "User not logged in"}), 400
+    data = request.get_json()
     print(data)
     if data is None:
         return jsonify({"success": False, "message": "Invalid subscription data"}), 400
@@ -244,7 +246,8 @@ def push_notification_subscribe():
         return jsonify({"success": False, "message": "Invalid subscription data"}), 400
     if MONGODB_DB["users"].find_one({"user_email": session["user_email"]}) is None:
         return jsonify({"success": False, "message": "User not found"}), 400
-    MONGODB_DB["users"].update_one({"user_email": session["user_email"]}, {"$set": {"user_push_subscription": data}})
+    user = MONGODB_DB["users"].find_one({"user_email": session["user_email"]})
+    user["user_push_subscription"].append(data)
     return jsonify({"success": True, "message": "User subscribed to push notifications successfully"}), 200
 
 

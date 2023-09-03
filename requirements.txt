@@ -1,6 +1,7 @@
 flask
 flask_session
 Flask-Limiter
+Flask-pyWebPush
 python-dotenv
 pymongo
 bcrypt

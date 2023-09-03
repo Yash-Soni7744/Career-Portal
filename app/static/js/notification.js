@@ -1,5 +1,13 @@
 "use strict";
 
+const applicationServerPublicKey =
+  "BI20wiA0b0BfvDimVNxstFYT7eyRh9x54mvfEvS54yZgPHxJQkQ3B3G-QDhmEhpcliKseZ02I3quhM2_Q9ZIXYQ";
+
+const pushButton = document.getElementById("subscribeBtn");
+
+let isSubscribed = false;
+let swRegistration = null;
+
 function urlB64ToUint8Array(base64String) {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
   const base64 = (base64String + padding)
@@ -15,25 +23,26 @@ function urlB64ToUint8Array(base64String) {
   return outputArray;
 }
 
-function updateSubscriptionOnServer(subscription, apiEndpoint) {
-  // TODO: Send subscription to application server
-
-  return fetch(apiEndpoint, {
+function updateSubscriptionOnServer(subscription) {
+  fetch("/api/push-notification/subscribe", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      subscription_json: JSON.stringify(subscription),
-    }),
-  });
+    body: JSON.stringify(subscription),
+  })
+    .then(function (response) {
+      console.log("Response from server: ", response);
+      if (response.ok) {
+        console.log("Subscription updated on server");
+      }
+    })
+    .catch(function (error) {
+      console.log("Error sending subscription to server: ", error);
+    });
 }
 
-function subscribeUser(
-  swRegistration,
-  applicationServerPublicKey,
-  apiEndpoint
-) {
+function subscribeUser() {
   const applicationServerKey = urlB64ToUint8Array(applicationServerPublicKey);
   swRegistration.pushManager
     .subscribe({
@@ -41,50 +50,63 @@ function subscribeUser(
       applicationServerKey: applicationServerKey,
     })
     .then(function (subscription) {
-      console.log("User is subscribed.");
+      console.log("User is subscribed, sending subscription to server");
 
-      return updateSubscriptionOnServer(subscription, apiEndpoint);
-    })
-    .then(function (response) {
-      if (!response.ok) {
-        throw new Error("Bad status code from server.");
-      }
-      return response.json();
-    })
-    .then(function (responseData) {
-      console.log(responseData);
-      if (responseData.status !== "success") {
-        throw new Error("Bad response from server.");
-      }
+      console.log("User is subscribed: ", subscription)
+
+      updateSubscriptionOnServer(subscription);
+
+      isSubscribed = true;
+      pushButton.style.display = "none";
     })
     .catch(function (err) {
+      pushButton.textContent = "Permission denied";
       console.log("Failed to subscribe the user: ", err);
-      console.log(err.stack);
     });
 }
 
-function registerServiceWorker(
-  serviceWorkerUrl = "/static/service-worker/push-notification.js",
-  applicationServerPublicKey = "BI20wiA0b0BfvDimVNxstFYT7eyRh9x54mvfEvS54yZgPHxJQkQ3B3G-QDhmEhpcliKseZ02I3quhM2_Q9ZIXYQ",
-  apiEndpoint = "/api/push-notification/subscribe"
-) {
-  let swRegistration = null;
-  if ("serviceWorker" in navigator && "PushManager" in window) {
-    console.log("Service Worker and Push is supported");
+function initializeUI() {
+  pushButton.addEventListener("click", function () {
+    pushButton.disabled = true;
+    if (isSubscribed) {
+      console.log("User is already subscribed");
+    } else {
+      console.log("User is not subscribed, subsribing user");
+      subscribeUser();
+    }
+  });
 
-    navigator.serviceWorker
-      .register(serviceWorkerUrl)
-      .then(function (swReg) {
-        console.log("Service Worker is registered", swReg);
-        subscribeUser(swReg, applicationServerPublicKey, apiEndpoint);
+  // Set the initial subscription value
+  swRegistration.pushManager.getSubscription().then(function (subscription) {
+    isSubscribed = !(subscription === null);
 
-        swRegistration = swReg;
-      })
-      .catch(function (error) {
-        console.error("Service Worker Error", error);
-      });
-  } else {
-    console.warn("Push messaging is not supported");
-  }
-  return swRegistration;
+    updateSubscriptionOnServer(subscription);
+
+    if (isSubscribed) {
+      pushButton.style.display = "none";
+      console.log("User is already subscribed.");
+    } else {
+      pushButton.style.display = "block";
+      console.log("User is not subscribed.");
+    }
+  });
+}
+
+if ("serviceWorker" in navigator && "PushManager" in window) {
+  console.log("Service Worker and Push is supported");
+
+  navigator.serviceWorker
+    .register("/static/service-worker/push-notification.js")
+    .then(function (swReg) {
+      console.log("Service Worker is registered", swReg);
+
+      swRegistration = swReg;
+      initializeUI();
+    })
+    .catch(function (error) {
+      console.error("Service Worker Error", error);
+    });
+} else {
+  console.warn("Push messaging is not supported");
+  pushButton.textContent = "Push Not Supported";
 }

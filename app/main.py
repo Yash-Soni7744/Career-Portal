@@ -6,10 +6,19 @@ from flask_limiter.util import get_remote_address
 from dotenv import load_dotenv
 from pymongo import MongoClient
 from flask_session import Session
+from flask_pywebpush import WebPush, WebPushException
+import secrets
 
 load_dotenv()
 
 app = Flask(__name__)
+
+push = WebPush(private_key=os.environ.get("VAPID_PRIVATE_KEY"),
+               sender_info='mailto:contact@projectrexa.dedyn.io')
+
+app.config["WEBPUSH_VAPID_PRIVATE_KEY"] = os.environ.get("VAPID_PRIVATE_KEY")
+app.config["WEBPUSH_VAPID_CLAIMS"] = {"sub": "mailto:contact@projectrexa.dedyn.io"}
+
 
 # Setting up secret key
 app.secret_key = os.environ.get("SECRET_KEY")
@@ -189,11 +198,56 @@ def dashboard():
         return redirect(url_for("signin"))
     return render_template("dashboard.html")
 
+@app.route("/send-notification", methods=["GET"])
+@limiter.limit("10 per minute")
+def send_notification():
+    if not session.get("logged_in"):
+        return redirect(url_for("signin"))
+    title = request.args.get("title")
+    body = request.args.get("body")
+    link = request.args.get("link")
+
+    notification = {
+        "notification_id": functions.get_current_timestamp(),
+        "notification_title": title,
+        "notification_body": body,
+        "notification_link": link,
+        "notification_created_at": functions.get_current_timestamp(),
+        "id": secrets.token_hex(16),
+        "ttl": 86400
+    }
+
+
+    if not title or not body:
+        return jsonify({"success": False, "message": "Title and body are required"}), 400
+    users = MONGODB_DB["users"].find()
+    for user in users:
+        if user["user_push_subscription"] is not None:
+            subscription = user["user_push_subscription"]
+            try:
+                push.send(subscription, notification)
+            except WebPushException as exc:
+                print(exc)
+                return jsonify({"success": False, "message": "Unable to send push notification"}), 500
+    return jsonify({"success": True, "message": "Notification sent successfully"}), 200
+
+
 @app.route("/api/push-notification/subscribe", methods=["POST"])
 @limiter.limit("10 per minute")
 def push_notification_subscribe():
-    print(request.get_json())
+    if not session.get("logged_in"):
+        return jsonify({"success": False, "message": "User not logged in"}), 400
+    data = request.get_json()
+    print(data)
+    if data is None:
+        return jsonify({"success": False, "message": "Invalid subscription data"}), 400
+    if not data["endpoint"] or not data["keys"]["auth"] or not data["keys"]["p256dh"]:
+        return jsonify({"success": False, "message": "Invalid subscription data"}), 400
+    if MONGODB_DB["users"].find_one({"user_email": session["user_email"]}) is None:
+        return jsonify({"success": False, "message": "User not found"}), 400
+    MONGODB_DB["users"].update_one({"user_email": session["user_email"]}, {"$set": {"user_push_subscription": data}})
     return jsonify({"success": True, "message": "User subscribed to push notifications successfully"}), 200
+
 
 
 if __name__ == "__main__":

@@ -226,6 +226,7 @@ def send_notification():
 
 
 @app.route("/logout")
+@app.route("/sign-out")
 @limiter.limit("10 per minute")
 def logout():
     """ This function handles the logic for logging out a user
@@ -247,6 +248,8 @@ def push_notification_subscribe():
         return jsonify({"success": False, "message": "User not logged in"}), 400
     data = request.get_json()
     if data is None:
+        return jsonify({"success": False, "message": "Invalid subscription data"}), 400
+    if data['subscription'] is None:
         return jsonify({"success": False, "message": "Invalid subscription data"}), 400
     if not data['subscription']["endpoint"] or not data['subscription']["keys"]["auth"] or not data['subscription']["keys"]["p256dh"]:
         return jsonify({"success": False, "message": "Invalid subscription data"}), 400

@@ -4,10 +4,82 @@
 <head>
     <meta charset="UTF-8">
     <title>Web Push Notifications</title>
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
 </head>
 <body>
-    <h1>Web Push Notifications</h1>
-    <button id="subscribeBtn" style="display: none;">Recive Push Notifications</button>
+    <div class="subscribe-container" id="subscribeContainer">
+        <h1>Enable Push Notifications</h1>
+        <p>Subscribe to receive notifications when new job posts are available.</p>
+        <br>
+        <button class="subscribe-button" id="subscribeBtn">Subscribe</button>
+    </div>
+    <main>
+        <navbar>
+            <div class="navbar-container">
+                <div class="navbar-logo">
+                    <img src="/static/images/logo.png" alt="logo">
+                </div>
+                <div class="navbar-links">
+                    <ul>
+                        <li><a href="/dashboard">Dashboard</a></li>
+                        <li><a href="/logout">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </navbar>
+        <div class="dashboard-container">
+            <div class="dashboard-header">
+                <h1>Dashboard</h1>
+            </div>
+            <div class="dashboard-content">
+                <div class="dashboard-content-header">
+                    <h2>Job Posts</h2>
+                </div>
+                <div class="dashboard-content-body">
+                    <div class="dashboard-content-body-header">
+                        <h3>Job Post 1</h3>
+                    </div>
+                    <div class="dashboard-content-body-body">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium, adipisci, alias aliquid amet asperiores atque autem blanditiis commodi consequatur cumque cupiditate delectus deleniti dicta dolorum ducimus ea earum eius eligendi error esse est et eum eveniet excepturi exercitationem expedita explicabo facere facilis fugiat fugit hic id illum impedit in incidunt ipsa ipsum iure laboriosam laborum libero magnam magni maiores maxime minima minus molestiae mollitia natus nemo neque nihil nisi nobis non nostrum nulla numquam obcaecati odio officia officiis omnis optio pariatur perferendis perspiciatis placeat porro possimus praesentium provident quae quam quasi quia quibusdam quisquam quod quos ratione recusandae rem repellat reprehenderit repudiandae rerum saepe sapiente sequi similique sint sit soluta sunt suscipit tempora temporibus tenetur totam ullam unde ut vel veniam veritatis voluptas voluptate voluptatem voluptates voluptatibus voluptatum.</p>
+                    </div>
+                    <div class="dashboard-content-body-footer">
+                        <button class="dashboard-content-body-footer-button">Apply</button>
+                    </div>
+                </div>
+                <div class="dashboard-content-body">
+                    <div class="dashboard-content-body-header">
+                        <h3>Job Post 2</h3>
+                    </div>
+                    <div class="dashboard-content-body-body">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium, adipisci, alias aliquid amet asperiores atque autem blanditiis commodi consequatur cumque cupiditate delectus deleniti dicta dolorum ducimus
+                            ea earum eius eligendi error esse est et eum eveniet excepturi exercitationem expedita explicabo facere facilis fugiat fugit hic id illum impedit in incidunt ipsa ipsum iure laboriosam laborum libero magnam magni
+                            maiores maxime minima minus molestiae mollitia natus nemo neque nihil nisi nobis non nostrum nulla numquam obcaecati odio officia officiis omnis optio pariatur perferendis perspiciatis placeat porro possimus praesentium
+                            provident quae quam quasi quia quibusdam quisquam quod quos ratione recusandae rem repellat reprehenderit repudiandae rerum saepe sapiente sequi similique sint sit soluta sunt suscipit tempora temporibus tenetur totam
+                            ullam unde ut vel veniam veritatis voluptas voluptate voluptatem voluptates voluptatibus voluptatum.</p>
+                    </div>
+                    <div class="dashboard-content-body-footer">
+                        <button class="dashboard-content-body-footer-button">Apply</button>
+                    </div>
+                </div>
+                <div class="dashboard-content-body">
+                    <div class="dashboard-content-body-header">
+                        <h3>Job Post 3</h3>
+                    </div>
+                    <div class="dashboard-content-body-body">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium, adipisci, alias aliquid amet asperiores atque autem blanditiis commodi consequatur cumque cupiditate delectus deleniti dicta dolorum ducimus
+                            ea earum eius eligendi error esse est et eum eveniet excepturi exercitationem expedita explicabo facere facilis fugiat fugit hic id illum impedit in incidunt ipsa ipsum iure laboriosam laborum libero magnam magni
+                            maiores maxime minima minus molestiae mollitia natus nemo neque nihil nisi nobis non nostrum nulla numquam obcaecati odio officia officiis omnis optio pariatur perferendis perspiciatis placeat porro possimus praesentium
+                            provident quae quam quasi quia quibusdam quisquam quod quos ratione recusandae rem repellat reprehenderit repudiandae rerum saepe sapiente sequi similique sint sit soluta sunt suscipit tempora temporibus tenetur totam
+                            ullam unde ut vel veniam veritatis voluptas voluptate voluptatem voluptates voluptatibus voluptatum.</p>
+                    </div>
+                    <div class="dashboard-content-body-footer">
+                        <button class="dashboard-content-body-footer-button">Apply</button>
+                    </div>
+                </div>
+                
+    </main>
+
 
     <script src="/static/js/notification.js"></script>
 </body>

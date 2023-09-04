@@ -1,0 +1,100 @@
+.subscribe-container {
+    display: none;
+    z-index: 1000;
+    padding: 30px;
+    transition: all 0.3s ease-in-out;
+}
+
+.subscribe-container button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background: linear-gradient(90deg, #0057FF 0%, #E800FC 94.03%);
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.subscribe-container h1 {
+    color: #000;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    text-align: center;
+    line-height: 1.2;
+    margin-bottom: 20px;
+}
+
+.subscribe-container p {
+    color: #000;
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    text-align: center;
+    line-height: 1.2;
+    margin-bottom: 20px;
+}
+
+.subscribe-container.active {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    background-color: #fff;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+.subscribe-container.active + main {
+    filter: blur(50px);
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+main .container {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+main .container .heading {
+    color: #797979;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    text-align: center;
+    margin: 10px 0;
+}
+
+main .container .heading span {
+    color: #0057FF;
+}
+
+main .container .heading a {
+    color: #0057FF;
+    text-decoration: none;
+}
+
+main .container .heading a:hover {
+    text-decoration: underline;
+}
+
+main .container .heading a:visited {
+    color: #0057FF;
+}
+
+

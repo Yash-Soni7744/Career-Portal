@@ -21,6 +21,7 @@ const applicationServerPublicKey =
   "BI20wiA0b0BfvDimVNxstFYT7eyRh9x54mvfEvS54yZgPHxJQkQ3B3G-QDhmEhpcliKseZ02I3quhM2_Q9ZIXYQ";
 
 const pushButton = document.getElementById("subscribeBtn");
+const subscribeContainer = document.getElementById("subscribeContainer");
 
 let isSubscribed = false;
 let swRegistration = null;
@@ -54,10 +55,12 @@ function updateSubscriptionOnServer(subscription) {
   })
     .then(function (response) {
       if (response.ok) {
+        subscribeContainer.classList.remove("active");
         console.log("Subscription updated on server");
       }
     })
     .catch(function (error) {
+      subscribeContainer.classList.add("active");
       console.log("Error sending subscription to server: ", error);
     });
 }
@@ -106,7 +109,7 @@ function initializeUI() {
       pushButton.style.display = "none";
       console.log("User is already subscribed.");
     } else {
-      pushButton.style.display = "block";
+      subscribeContainer.classList.add("active");
       console.log("User is not subscribed.");
     }
   });

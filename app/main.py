@@ -225,6 +225,21 @@ def send_notification():
     
 
 
+@app.route("/logout")
+@limiter.limit("10 per minute")
+def logout():
+    """ This function handles the logic for logging out a user
+
+    Returns:
+        _type_: flask.redirect
+    """
+    if not session.get("logged_in"):
+        return redirect(url_for("signin"))
+    session.clear()
+    return redirect(url_for("signin"))
+
+# API Routes 
+
 @app.route("/api/push-notification/subscribe", methods=["POST"])
 @limiter.limit("10 per minute")
 def push_notification_subscribe():
@@ -244,7 +259,33 @@ def push_notification_subscribe():
 
     return jsonify({"success": True, "message": "User subscribed to push notifications successfully"}), 200
 
-
+@app.route("/create-job-posting", methods=["GET", "POST"])
+@limiter.limit("10 per minute")
+def create_job_posting():
+    if not session.get("logged_in"):
+        return redirect(url_for("signin"))
+    if session.get("user_role") != "admin":
+        return redirect(url_for("index"))
+    if request.method == "GET":
+        return render_template("create_job_posting.html")
+    else:
+        data = request.get_json()
+        if data is None:
+            return jsonify({"success": False, "message": "Invalid job posting data"}), 400
+        if not data["job_title"] or not data["job_description"] or not data["job_location"] or not data["job_salary"] or not data["job_company"] or not data["job_link"]:
+            return jsonify({"success": False, "message": "Invalid job posting data"}), 400
+        if MONGODB_DB["job_postings"].find_one({"job_title": data["job_title"]}) is not None:
+            return jsonify({"success": False, "message": "Job posting already exists"}), 400
+        MONGODB_DB["job_postings"].insert_one({
+            "job_title": data["job_title"],
+            "job_description": data["job_description"],
+            "job_location": data["job_location"],
+            "job_salary": data["job_salary"],
+            "job_company": data["job_company"],
+            "job_link": data["job_link"],
+            "job_created_at": functions.get_current_timestamp()
+        })
+        return jsonify({"success": True, "message": "Job posting created successfully"}), 200
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)

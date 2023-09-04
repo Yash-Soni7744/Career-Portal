@@ -46,13 +46,8 @@ self.addEventListener("push", function (event) {
     body: body,
     icon: "/static/images/logo-circular.png",
     badge: "/static/images/favicon.ico",
+    image: "/static/images/logo-circular.png",
     vibrate: [100, 200, 100],
-    action: [
-      {
-        action: "view",
-        title: "Apply Now",
-      },
-    ],
 
     data: {
       dateOfArrival: Date.now(),

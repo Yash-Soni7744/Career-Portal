@@ -198,37 +198,29 @@ def dashboard():
         return redirect(url_for("signin"))
     return render_template("dashboard.html")
 
-@app.route("/send-notification", methods=["GET"])
+@app.route("/send-notification", methods=["GET", "POST"])
 @limiter.limit("10 per minute")
 def send_notification():
     if not session.get("logged_in"):
         return redirect(url_for("signin"))
-    title = request.args.get("title")
-    body = request.args.get("body")
-    link = request.args.get("link")
+    if request.method == "GET":
+        return render_template("send_notification.html")
+    else:
+        data = request.get_json()
+        if data is None:
+            return jsonify({"success": False, "message": "Invalid notification data"}), 400
+        if not data["notification_title"] or not data["notification_body"]:
+            return jsonify({"success": False, "message": "Notification title and body are required"}), 400
+        if not functions.send_notification(data["notification_email"], data["notification_title"], data["notification_body"]):
+            return jsonify({"success": False, "message": "Unable to send notification, try again later or contact support"}), 500
+        MONGODB_DB["users"].update_one({"user_email": data["notification_email"]}, {"$push": {"user_notifications": {
+            "notification_id": secrets.token_hex(16),
+            "notification_title": data["notification_title"],
+            "notification_body": data["notification_body"],
+            "notification_created_at": functions.get_current_timestamp(),
+            "notification_read": False
+        }}})
 
-    notification = {
-        "notification_id": functions.get_current_timestamp(),
-        "notification_title": title,
-        "notification_body": body,
-        "notification_link": link,
-        "notification_created_at": functions.get_current_timestamp(),
-        "id": secrets.token_hex(16),
-        "ttl": 86400,
-    }
-
-
-    if not title or not body:
-        return jsonify({"success": False, "message": "Title and body are required"}), 400
-    users = MONGODB_DB["users"].find()
-    for user in users:
-        if user["user_push_subscription"] is not None:
-            for subscription in user["user_push_subscription"]:
-                try:
-                    push.send(subscription['subscription'], notification)
-                except WebPushException as exc:
-                    print(exc)
-                    return jsonify({"success": False, "message": "Unable to send push notification"}), 500
         return jsonify({"success": True, "message": "Notification sent successfully"}), 200
     
 

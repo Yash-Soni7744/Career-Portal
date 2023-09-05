@@ -60,7 +60,7 @@ main {
 
 .signup-card span.colour-highlight {
     font-weight: 700;
-    background: linear-gradient(90deg, #0057FF 0%, #E800FC 94.03%);
+    background: linear-gradient(90deg, #6B7BFF 0%, #5E31FF 48.23%, #7B3AFE 75.31%, #CD43FD 100%);
     /* This makes the text transparent */
     -webkit-text-fill-color: transparent;
     /* This makes the gradient show through */

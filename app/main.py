@@ -17,7 +17,8 @@ push = WebPush(private_key=os.environ.get("VAPID_PRIVATE_KEY"),
                sender_info='mailto:contact@projectrexa.dedyn.io')
 
 app.config["WEBPUSH_VAPID_PRIVATE_KEY"] = os.environ.get("VAPID_PRIVATE_KEY")
-app.config["WEBPUSH_VAPID_CLAIMS"] = {"sub": "mailto:contact@projectrexa.dedyn.io"}
+app.config["WEBPUSH_VAPID_CLAIMS"] = {
+    "sub": "mailto:contact@projectrexa.dedyn.io"}
 
 
 # Setting up secret key
@@ -39,6 +40,7 @@ limiter = Limiter(
     default_limits=["10000 per day", "2000 per hour"],
     storage_uri="memory://"
 )
+
 
 @app.route("/")
 @limiter.limit("10 per minute")
@@ -84,7 +86,7 @@ def signup():
                 return jsonify({"success": False, "message": "Only K.R. Mangalam University email addresses are allowed"}), 400
         except IndexError:
             return jsonify({"success": False, "message": "Only K.R. Mangalam University email addresses are allowed"}), 400
-        
+
         session["user_email"] = user_email
 
         if len(user_password) < 8:
@@ -92,13 +94,13 @@ def signup():
 
         if not functions.verify_recaptcha(recaptcha_token):
             return jsonify({"success": False, "message": "Suspicious activity detected, try again later or contact support"}), 400
-        
+
         if MONGODB_DB["student_info"].find_one({"email": user_email}) is None:
             return jsonify({"success": False, "message": "This email is not registered with KRMU"}), 400
 
         if MONGODB_DB["users"].find_one({"user_email": user_email}):
             return jsonify({"success": False, "message": "This email address is already registered with us, try logging in"}), 400
-        
+
         hashed_password = functions.hash_password(user_password)
 
         if not functions.send_email(user_email, "verify_new_user"):
@@ -180,16 +182,20 @@ def signin():
 
         if not MONGODB_DB["users"].find_one({"user_email": user_email})["email_verified"]:
             return jsonify({"success": False, "message": "Email not verified, check your inbox for verification email"}), 400
-        
-        session["logged_in"] = True
-        session["user_role"] = MONGODB_DB["users"].find_one({"user_email": user_email})["user_role"]
-        session["user_email"] = user_email
-        session["user_name"] = MONGODB_DB["users"].find_one({"user_email": user_email})["user_profile"]["user_name"]
-        session["user_branch"] = MONGODB_DB["users"].find_one({"user_email": user_email})["user_profile"]["user_branch"]
-        session["user_year"] = MONGODB_DB["users"].find_one({"user_email": user_email})["user_profile"]["user_year"]
 
+        session["logged_in"] = True
+        session["user_role"] = MONGODB_DB["users"].find_one(
+            {"user_email": user_email})["user_role"]
+        session["user_email"] = user_email
+        session["user_name"] = MONGODB_DB["users"].find_one({"user_email": user_email})[
+            "user_profile"]["user_name"]
+        session["user_branch"] = MONGODB_DB["users"].find_one(
+            {"user_email": user_email})["user_profile"]["user_branch"]
+        session["user_year"] = MONGODB_DB["users"].find_one({"user_email": user_email})[
+            "user_profile"]["user_year"]
 
         return jsonify({"success": True, "message": "User logged in successfully"}), 200
+
 
 @app.route("/dashboard")
 @limiter.limit("10 per minute")
@@ -198,31 +204,38 @@ def dashboard():
         return redirect(url_for("signin"))
     return render_template("dashboard.html")
 
+
 @app.route("/send-notification", methods=["GET", "POST"])
 @limiter.limit("10 per minute")
 def send_notification():
     if not session.get("logged_in"):
         return redirect(url_for("signin"))
-    if request.method == "GET":
-        return render_template("send_notification.html")
-    else:
-        data = request.get_json()
-        if data is None:
-            return jsonify({"success": False, "message": "Invalid notification data"}), 400
-        if not data["notification_title"] or not data["notification_body"]:
-            return jsonify({"success": False, "message": "Notification title and body are required"}), 400
-        if not functions.send_notification(data["notification_email"], data["notification_title"], data["notification_body"]):
-            return jsonify({"success": False, "message": "Unable to send notification, try again later or contact support"}), 500
-        MONGODB_DB["users"].update_one({"user_email": data["notification_email"]}, {"$push": {"user_notifications": {
-            "notification_id": secrets.token_hex(16),
-            "notification_title": data["notification_title"],
-            "notification_body": data["notification_body"],
-            "notification_created_at": functions.get_current_timestamp(),
-            "notification_read": False
-        }}})
+    title = request.args.get("title")
+    body = request.args.get("body")
+    link = request.args.get("link")
 
-        return jsonify({"success": True, "message": "Notification sent successfully"}), 200
-    
+    notification = {
+        "notification_id": functions.get_current_timestamp(),
+        "notification_title": title,
+        "notification_body": body,
+        "notification_link": link,
+        "notification_created_at": functions.get_current_timestamp(),
+        "id": secrets.token_hex(16),
+        "ttl": 86400,
+    }
+
+    if not title or not body:
+        return jsonify({"success": False, "message": "Title and body are required"}), 400
+    users = MONGODB_DB["users"].find()
+    for user in users:
+        if user["user_push_subscription"] is not None:
+            for subscription in user["user_push_subscription"]:
+                try:
+                    push.send(subscription['subscription'], notification)
+                except WebPushException as exc:
+                    print(exc)
+                    pass
+    return jsonify({"success": True, "message": "Notification sent successfully"}), 200
 
 
 @app.route("/logout")
@@ -239,7 +252,8 @@ def logout():
     session.clear()
     return redirect(url_for("signin"))
 
-# API Routes 
+# API Routes
+
 
 @app.route("/api/push-notification/subscribe", methods=["POST"])
 @limiter.limit("10 per minute")
@@ -247,6 +261,7 @@ def push_notification_subscribe():
     if not session.get("logged_in"):
         return jsonify({"success": False, "message": "User not logged in"}), 400
     data = request.get_json()
+    print(data)
     if data is None:
         return jsonify({"success": False, "message": "Invalid subscription data"}), 400
     if data['subscription'] is None:
@@ -257,10 +272,13 @@ def push_notification_subscribe():
         return jsonify({"success": False, "message": "User not found"}), 400
     for subscription in MONGODB_DB["users"].find_one({"user_email": session["user_email"]})["user_push_subscription"]:
         if subscription["notification-identifier"] == data["notification-identifier"]:
-                MONGODB_DB["users"].update_one({"user_email": session["user_email"]}, {"$pull": {"user_push_subscription": {"notification-identifier": data["notification-identifier"]}}})
-    MONGODB_DB["users"].update_one({"user_email": session["user_email"]}, {"$push": {"user_push_subscription": data}})
+            MONGODB_DB["users"].update_one({"user_email": session["user_email"]}, {"$pull": {
+                                           "user_push_subscription": {"notification-identifier": data["notification-identifier"]}}})
+    MONGODB_DB["users"].update_one({"user_email": session["user_email"]}, {
+                                   "$push": {"user_push_subscription": data}})
 
     return jsonify({"success": True, "message": "User subscribed to push notifications successfully"}), 200
+
 
 @app.route("/create-job-posting", methods=["GET", "POST"])
 @limiter.limit("10 per minute")
@@ -288,7 +306,9 @@ def create_job_posting():
             "job_link": data["job_link"],
             "job_created_at": functions.get_current_timestamp()
         })
-        return jsonify({"success": True, "message": "Job posting created successfully"}), 200
+        for user in MONGODB_DB["users"].find():
+            return jsonify({"success": True, "message": "Job posting created successfully"}), 200
+
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)

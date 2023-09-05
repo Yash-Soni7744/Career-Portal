@@ -46,7 +46,6 @@ self.addEventListener("push", function (event) {
     body: body,
     icon: "/static/images/logo-circular.png",
     badge: "/static/images/favicon.ico",
-    image: "/static/images/logo-circular.png",
     vibrate: [100, 200, 100],
 
     data: {
@@ -67,5 +66,31 @@ self.addEventListener("notificationclick", function (event) {
         "?notification_id=" +
         event.notification.data.id
     )
+  );
+});
+
+self.addEventListener('pushsubscriptionchange', function(event) {
+  event.waitUntil(
+    fetch("/api/push-notification/subscribe", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        "subscription": subscription,
+        "notification-identifier": localStorage.getItem("notification-identifier"),
+      }),
+      
+    })
+      .then(function (response) {
+        if (response.ok) {
+          subscribeContainer.classList.remove("active");
+          console.log("Subscription updated on server");
+        }
+      })
+      .catch(function (error) {
+        subscribeContainer.classList.add("active");
+        console.log("Error sending subscription to server: ", error);
+      })
   );
 });

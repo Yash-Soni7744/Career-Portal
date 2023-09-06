@@ -50,51 +50,195 @@
 }
 
 
-.subscribe-container.active + main {
+.subscribe-container.active+main {
     filter: blur(50px);
 }
 
 main {
+    position: relative;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
     height: 100%;
     width: 100%;
 }
 
-main .container {
-    width: 100%;
-    max-width: 500px;
-    margin: 0 auto;
-    padding: 20px;
+navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 100vh;
+    background-color: #FFFFFF;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 50px;
+    z-index: 100;
 }
 
-main .container .heading {
-    color: #797979;
+main section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100%;
+    width: 100%;
+    margin-left: 200px;
+    padding: 20px 20px;
+    background-color: #f4f4f4;
+}
+
+main section header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+    align-content: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+main section header h1 {
+    color: #000;
+    font-size: 2.5rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    text-align: left;
+    line-height: 1.2;
+    width: 90%;
+    color: #8d8d8d;
+}
+
+main section header .user-name {
+    color: #000;
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    text-align: left;
+    line-height: 1.2;
+    width: 90%;
+}
+
+.dashboard-header-notifications {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.dashboard-header-notifications-icon {
+    position: relative;
+    cursor: pointer;
+}
+
+.dashboard-header-notifications-icon svg {
+    width: 30px;
+    height: 30px;
+    fill: #000;
+}
+
+.dashboard-header-notifications-count {
+    position: absolute;
+    top: 10px;
+    right: 0;
+    width: 15px;
+    height: 15px;
+    background-color: #7234FE;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+}
+
+.profile-image img{
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+}
+
+.main-section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    min-width: 100vh;
+}
+
+.user-statistics {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 30%;
+    padding: 20px;
+    background-color: #FFFFFF;
+    box-shadow: 5px 6px 18px 0px #00000040;
+    border-radius: 20px;
+    gap: 20px;
+}
+
+.user-statistics .jobs-applied {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+.user-statistics .interviews-given {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.user-statistics .jobs-applied .icon, .user-statistics .interviews-given .icon {
+    border-radius: 100%;
+    background: linear-gradient(142.9deg, #7234FE 7.18%, #D35AFD 96.69%);
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.user-statistics .jobs-applied .icon svg, .user-statistics .interviews-given .icon svg {
+    width: 30px;
+    height: 30px;
+    fill: #fff;
+    margin: none;
+    padding: none;
+}
+
+.user-statistics .jobs-applied .data-value, .user-statistics .interviews-given .data-value {
+    color: #000;
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    text-align: center;
+    line-height: 1.2;
+    margin-bottom: 10px;
+}
+
+.user-statistics .jobs-applied .highlight, .user-statistics .interviews-given .highlight {
+    color: #7234FE;
     font-size: 1rem;
     font-weight: 700;
     letter-spacing: -0.01em;
-    line-height: 1.2;
     text-align: center;
-    margin: 10px 0;
+    line-height: 1.2;
 }
-
-main .container .heading span {
-    color: #0057FF;
-}
-
-main .container .heading a {
-    color: #0057FF;
-    text-decoration: none;
-}
-
-main .container .heading a:hover {
-    text-decoration: underline;
-}
-
-main .container .heading a:visited {
-    color: #0057FF;
-}
-
 

@@ -1,86 +1,111 @@
 <!-- © 2023 SOET, K.R. Mangalam University, All Rights Reserved. -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Web Push Notifications</title>
-    <link rel="stylesheet" href="/static/css/base.css">
-    <link rel="stylesheet" href="/static/css/dashboard.css">
-</head>
-<body>
+    <link rel="stylesheet" href="/static/css/base.css" />
+    <link rel="stylesheet" href="/static/css/dashboard.css" />
+  </head>
+  <body>
     <div class="subscribe-container" id="subscribeContainer">
-        <h1>Enable Push Notifications</h1>
-        <p>Subscribe to receive notifications when new job posts are available.</p>
-        <br>
-        <button class="subscribe-button" id="subscribeBtn">Subscribe</button>
+      <h1>Enable Push Notifications</h1>
+      <p>
+        Subscribe to receive notifications when new job posts are available.
+      </p>
+      <br />
+      <button class="subscribe-button" id="subscribeBtn">Subscribe</button>
     </div>
     <main>
-        <navbar>
-            <div class="navbar-container">
-                <div class="navbar-logo">
-                    <img src="/static/images/logo.png" alt="logo">
-                </div>
-                <div class="navbar-links">
-                    <ul>
-                        <li><a href="/dashboard">Dashboard</a></li>
-                        <li><a href="/logout">Logout</a></li>
-                    </ul>
-                </div>
+      <navbar>
+        <img src="/static/images/logo.svg" alt="logo" />
+        <ul>
+          <li>
+            <a href="/dashboard">Dashboard</a>
+          </li>
+          <li>
+            <a href="/jobs">Jobs</a>
+          </li>
+          <li>
+            <a href="/profile">Profile</a>
+          </li>
+          <li>
+            <a href="/logout">Logout</a>
+          </li>
+        </ul>
+      </navbar>
+      <section class="dashboard-container">
+        <header class="dashboard-header">
+          <h1 class="dashboard-header-title">
+            Good Morning, <span class="user-name">Om Mishra</span>
+          </h1>
+          <div class="dashboard-header-notifications">
+            <div class="dashboard-header-notifications-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="24"
+                viewBox="0 -960 960 960"
+                width="24"
+              >
+                <path
+                  d="M160-200v-80h80v-280q0-83 50-147.5T420-792v-28q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v28q80 20 130 84.5T720-560v280h80v80H160Zm320-300Zm0 420q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80ZM320-280h320v-280q0-66-47-113t-113-47q-66 0-113 47t-47 113v280Z"
+                />
+              </svg>
             </div>
-        </navbar>
-        <div class="dashboard-container">
-            <div class="dashboard-header">
-                <h1>Dashboard</h1>
+            <div class="dashboard-header-notifications-count">
+              <p id="notificationCount">0</p>
             </div>
-            <div class="dashboard-content">
-                <div class="dashboard-content-header">
-                    <h2>Job Posts</h2>
-                </div>
-                <div class="dashboard-content-body">
-                    <div class="dashboard-content-body-header">
-                        <h3>Job Post 1</h3>
-                    </div>
-                    <div class="dashboard-content-body-body">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium, adipisci, alias aliquid amet asperiores atque autem blanditiis commodi consequatur cumque cupiditate delectus deleniti dicta dolorum ducimus ea earum eius eligendi error esse est et eum eveniet excepturi exercitationem expedita explicabo facere facilis fugiat fugit hic id illum impedit in incidunt ipsa ipsum iure laboriosam laborum libero magnam magni maiores maxime minima minus molestiae mollitia natus nemo neque nihil nisi nobis non nostrum nulla numquam obcaecati odio officia officiis omnis optio pariatur perferendis perspiciatis placeat porro possimus praesentium provident quae quam quasi quia quibusdam quisquam quod quos ratione recusandae rem repellat reprehenderit repudiandae rerum saepe sapiente sequi similique sint sit soluta sunt suscipit tempora temporibus tenetur totam ullam unde ut vel veniam veritatis voluptas voluptate voluptatem voluptates voluptatibus voluptatum.</p>
-                    </div>
-                    <div class="dashboard-content-body-footer">
-                        <button class="dashboard-content-body-footer-button">Apply</button>
-                    </div>
-                </div>
-                <div class="dashboard-content-body">
-                    <div class="dashboard-content-body-header">
-                        <h3>Job Post 2</h3>
-                    </div>
-                    <div class="dashboard-content-body-body">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium, adipisci, alias aliquid amet asperiores atque autem blanditiis commodi consequatur cumque cupiditate delectus deleniti dicta dolorum ducimus
-                            ea earum eius eligendi error esse est et eum eveniet excepturi exercitationem expedita explicabo facere facilis fugiat fugit hic id illum impedit in incidunt ipsa ipsum iure laboriosam laborum libero magnam magni
-                            maiores maxime minima minus molestiae mollitia natus nemo neque nihil nisi nobis non nostrum nulla numquam obcaecati odio officia officiis omnis optio pariatur perferendis perspiciatis placeat porro possimus praesentium
-                            provident quae quam quasi quia quibusdam quisquam quod quos ratione recusandae rem repellat reprehenderit repudiandae rerum saepe sapiente sequi similique sint sit soluta sunt suscipit tempora temporibus tenetur totam
-                            ullam unde ut vel veniam veritatis voluptas voluptate voluptatem voluptates voluptatibus voluptatum.</p>
-                    </div>
-                    <div class="dashboard-content-body-footer">
-                        <button class="dashboard-content-body-footer-button">Apply</button>
-                    </div>
-                </div>
-                <div class="dashboard-content-body">
-                    <div class="dashboard-content-body-header">
-                        <h3>Job Post 3</h3>
-                    </div>
-                    <div class="dashboard-content-body-body">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium, adipisci, alias aliquid amet asperiores atque autem blanditiis commodi consequatur cumque cupiditate delectus deleniti dicta dolorum ducimus
-                            ea earum eius eligendi error esse est et eum eveniet excepturi exercitationem expedita explicabo facere facilis fugiat fugit hic id illum impedit in incidunt ipsa ipsum iure laboriosam laborum libero magnam magni
-                            maiores maxime minima minus molestiae mollitia natus nemo neque nihil nisi nobis non nostrum nulla numquam obcaecati odio officia officiis omnis optio pariatur perferendis perspiciatis placeat porro possimus praesentium
-                            provident quae quam quasi quia quibusdam quisquam quod quos ratione recusandae rem repellat reprehenderit repudiandae rerum saepe sapiente sequi similique sint sit soluta sunt suscipit tempora temporibus tenetur totam
-                            ullam unde ut vel veniam veritatis voluptas voluptate voluptatem voluptates voluptatibus voluptatum.</p>
-                    </div>
-                    <div class="dashboard-content-body-footer">
-                        <button class="dashboard-content-body-footer-button">Apply</button>
-                    </div>
-                </div>
-                
+          </div>
+          <div class="profile-container">
+            <div class="profile-image">
+              <img
+                src="https://picsum.photos/200"
+                alt="profile"
+              />
+            </div>
+          </div>
+        </header>
+        <section class="main-section">
+          <div class="user-statistics">
+            <div class="jobs-applied">
+              <div class="icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24"
+                  viewBox="0 -960 960 960"
+                  width="24"
+                >
+                  <path
+                    d="M638-80 468-250l56-56 114 114 226-226 56 56L638-80ZM480-520l320-200H160l320 200Zm0 80L160-640v400h206l80 80H160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v174l-80 80v-174L480-440Zm0 0Zm0-80Zm0 80Z"
+                  />
+                </svg>
+              </div>
+              <p class="data-value">00</p>
+              <p class="highlight">Jobs Applied</p>
+            </div>
+            <div class="interviews-given">
+              <div class="icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24"
+                  viewBox="0 -960 960 960"
+                  width="24"
+                >
+                  <path
+                    d="M360-320h80v-120h120v-80H440v-120h-80v120H240v80h120v120ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h480q33 0 56.5 23.5T720-720v180l160-160v440L720-420v180q0 33-23.5 56.5T640-160H160Zm0-80h480v-480H160v480Zm0 0v-480 480Z"
+                  />
+                </svg>
+              </div>
+              <p class="data-value">00</p>
+              <p class="highlight">Jobs Interviewd</p>
+            </div>
+          </div>
+          <div class="upcoming-interviews">
+          </div>
+        </section>
+      </section>
     </main>
 
-
     <script src="/static/js/notification.js"></script>
-</body>
+  </body>
 </html>

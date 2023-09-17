@@ -3,9 +3,12 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Web Push Notifications</title>
+    <meta name="viewport" content="width=1024" />
+    <title>Dashboard</title>
     <link rel="stylesheet" href="/static/css/base.css" />
     <link rel="stylesheet" href="/static/css/dashboard.css" />
+    <script src="/static/js/dashboard.js" defer></script>
+    <link rel="icon" href="/static/images/favicon.ico " type="image/x-icon" />
   </head>
   <body>
     <div class="subscribe-container" id="subscribeContainer">
@@ -16,31 +19,129 @@
       <br />
       <button class="subscribe-button" id="subscribeBtn">Subscribe</button>
     </div>
-    <main>
-      <navbar>
-        <img src="/static/images/logo.svg" alt="logo" />
+    <navbar>
+      <img src="/static/images/logo.svg" alt="logo" />
+      <div class="upper-navbar">
+        
         <ul>
-          <li>
-            <a href="/dashboard">Dashboard</a>
+          <li class="active-menu-item">
+            <div class="menu-item" >
+              <a href="/dashboard">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24"
+                  viewBox="0 -960 960 960"
+                  width="24"
+                >
+                  <path
+                    d="M520-600v-240h320v240H520ZM120-440v-400h320v400H120Zm400 320v-400h320v400H520Zm-400 0v-240h320v240H120Zm80-400h160v-240H200v240Zm400 320h160v-240H600v240Zm0-480h160v-80H600v80ZM200-200h160v-80H200v80Zm160-320Zm240-160Zm0 240ZM360-280Z"
+                  />
+                </svg>
+                <p class="menu-text">Dashboard</p>
+              </a>
+            </div>
           </li>
           <li>
-            <a href="/jobs">Jobs</a>
+            <div class="menu-item">
+              <a href="/jobs">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24"
+                  viewBox="0 -960 960 960"
+                  width="24"
+                >
+                  <path
+                    d="M160-120q-33 0-56.5-23.5T80-200v-440q0-33 23.5-56.5T160-720h160v-80q0-33 23.5-56.5T400-880h160q33 0 56.5 23.5T640-800v80h160q33 0 56.5 23.5T880-640v440q0 33-23.5 56.5T800-120H160Zm0-80h640v-440H160v440Zm240-520h160v-80H400v80ZM160-200v-440 440Z"
+                  />
+                </svg>
+                <p class="menu-text">Jobs</p>
+              </a>
+            </div>
           </li>
           <li>
-            <a href="/profile">Profile</a>
-          </li>
-          <li>
-            <a href="/logout">Logout</a>
+            <div class="menu-item">
+              <a href="/projects">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24"
+                  viewBox="0 -960 960 960"
+                  width="24"
+                >
+                  <path
+                    d="M480-80q-26 0-47-12.5T400-126q-33 0-56.5-23.5T320-206v-142q-59-39-94.5-103T190-590q0-121 84.5-205.5T480-880q121 0 205.5 84.5T770-590q0 77-35.5 140T640-348v142q0 33-23.5 56.5T560-126q-12 21-33 33.5T480-80Zm-80-126h160v-36H400v36Zm0-76h160v-38H400v38Zm-8-118h58v-108l-88-88 42-42 76 76 76-76 42 42-88 88v108h58q54-26 88-76.5T690-590q0-88-61-149t-149-61q-88 0-149 61t-61 149q0 63 34 113.5t88 76.5Zm88-162Zm0-38Z"
+                  />
+                </svg>
+                <p class="menu-text">Projects</p>
+              </a>
+            </div>
           </li>
         </ul>
-      </navbar>
-      <section class="dashboard-container">
-        <header class="dashboard-header">
+      </div>
+      <hr class="navbar-divider" />
+
+      <div class="lower-navbar">
+        <ul>
+          <li>
+            <div class="menu-item">
+              <a href="/account/activity">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M480-120q-75 0-140.5-28.5t-114-77q-48.5-48.5-77-114T120-480q0-75 28.5-140.5t77-114q48.5-48.5 114-77T480-840q82 0 155.5 35T760-706v-94h80v240H600v-80h110q-41-56-101-88t-129-32q-117 0-198.5 81.5T200-480q0 117 81.5 198.5T480-200q105 0 183.5-68T756-440h82q-15 137-117.5 228.5T480-120Zm112-192L440-464v-216h80v184l128 128-56 56Z"/></svg>
+                <p class="menu-text">Activity</p>
+              </a>
+            </div>
+          </li>
+          <li>
+            <div class="menu-item" >
+              <a href="/account">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M234-276q51-39 114-61.5T480-360q69 0 132 22.5T726-276q35-41 54.5-93T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 59 19.5 111t54.5 93Zm246-164q-59 0-99.5-40.5T340-580q0-59 40.5-99.5T480-720q59 0 99.5 40.5T620-580q0 59-40.5 99.5T480-440Zm0 360q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q53 0 100-15.5t86-44.5q-39-29-86-44.5T480-280q-53 0-100 15.5T294-220q39 29 86 44.5T480-160Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z"/></svg>
+                <p class="menu-text">Account</p>
+              </a>
+            </div>
+          </li>
+          <li>
+            <div class="menu-item">
+              <a href="/logout">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h280v80H200Zm440-160-55-58 102-102H360v-80h327L585-622l55-58 200 200-200 200Z"/></svg>
+                <p class="menu-text">Logout</p>
+              </a>
+            </div>
+      </div>
+      
+    </navbar>
+    <main>  
+      <header class="dashboard-header">
           <h1 class="dashboard-header-title">
             Good Morning, <span class="user-name">Om Mishra</span>
           </h1>
-          <div class="dashboard-header-notifications">
-            <div class="dashboard-header-notifications-icon">
+          <a href="/account/notifications">
+            <div class="dashboard-header-notifications">
+              <div class="dashboard-header-notifications-icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24"
+                  viewBox="0 -960 960 960"
+                  width="24"
+                >
+                  <path
+                    d="M160-200v-80h80v-280q0-83 50-147.5T420-792v-28q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v28q80 20 130 84.5T720-560v280h80v80H160Zm320-300Zm0 420q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80ZM320-280h320v-280q0-66-47-113t-113-47q-66 0-113 47t-47 113v280Z"
+                  />
+                </svg>
+              </div>
+              <div class="dashboard-header-notifications-count">
+                <p id="notificationCount">0</p>
+              </div>
+            </div>
+          </a>
+          <div class="profile-container">
+            <div class="profile-image">
+              <img src="https://picsum.photos/200" alt="profile" />
+            </div>
+          </div>
+      </header>
+      <br>
+      <section class="main-section">
+        <div class="user-statistics">
+          <div class="jobs-applied">
+            <div class="icon">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 height="24"
@@ -48,61 +149,201 @@
                 width="24"
               >
                 <path
-                  d="M160-200v-80h80v-280q0-83 50-147.5T420-792v-28q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v28q80 20 130 84.5T720-560v280h80v80H160Zm320-300Zm0 420q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80ZM320-280h320v-280q0-66-47-113t-113-47q-66 0-113 47t-47 113v280Z"
+                  d="M638-80 468-250l56-56 114 114 226-226 56 56L638-80ZM480-520l320-200H160l320 200Zm0 80L160-640v400h206l80 80H160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v174l-80 80v-174L480-440Zm0 0Zm0-80Zm0 80Z"
                 />
               </svg>
             </div>
-            <div class="dashboard-header-notifications-count">
-              <p id="notificationCount">0</p>
-            </div>
+            <p class="data-value">05</p>
+            <p class="highlight">Jobs Applied</p>
           </div>
-          <div class="profile-container">
-            <div class="profile-image">
-              <img
-                src="https://picsum.photos/200"
-                alt="profile"
-              />
+          <div class="interviews-given">
+            <div class="icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="24"
+                viewBox="0 -960 960 960"
+                width="24"
+              >
+                <path
+                  d="M360-320h80v-120h120v-80H440v-120h-80v120H240v80h120v120ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h480q33 0 56.5 23.5T720-720v180l160-160v440L720-420v180q0 33-23.5 56.5T640-160H160Zm0-80h480v-480H160v480Zm0 0v-480 480Z"
+                />
+              </svg>
             </div>
+            <p class="data-value">03</p>
+            <p class="highlight">Jobs Interviewd</p>
           </div>
-        </header>
-        <section class="main-section">
-          <div class="user-statistics">
-            <div class="jobs-applied">
-              <div class="icon">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  height="24"
-                  viewBox="0 -960 960 960"
-                  width="24"
-                >
-                  <path
-                    d="M638-80 468-250l56-56 114 114 226-226 56 56L638-80ZM480-520l320-200H160l320 200Zm0 80L160-640v400h206l80 80H160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v174l-80 80v-174L480-440Zm0 0Zm0-80Zm0 80Z"
-                  />
-                </svg>
+        </div>
+        <div class="upcoming-interviews">
+          <h1 class="upcoming-interviews-title">Upcoming Interviews</h1>
+          <div class="slider">
+            <p class="current-date">
+              <script>
+                var date = new Date();
+                var month = date.toLocaleString("default", { month: "long" });
+                var day = date.getDate();
+                var year = date.getFullYear();
+                document.write(month + " " + day + ", " + year);
+              </script>
+            </p>
+            <div class="controls">
+              <svg id="left-slider" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M640-80 240-480l400-400 71 71-329 329 329 329-71 71Z"/></svg>
+              <svg id="right-slider" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m321-80-71-71 329-329-329-329 71-71 400 400L321-80Z"/></svg>
+          </div>
+          </div>
+          <div class="upcoming-interviews-container">
+            <div class="upcoming-interviews-card">
+              <img src="https://picsum.photos/200" alt="company-logo" class="company-logo" />
+              <div class="upcoming-interviews-card-details">
+                <h1 class="company-name">Airtel</h1>
+                <p class="interview-position">Network Engineer</p>
               </div>
-              <p class="data-value">00</p>
-              <p class="highlight">Jobs Applied</p>
+              <div class="upcoming-interviews-card-date">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m612-292 56-56-148-148v-184h-80v216l172 172ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-400Zm0 320q133 0 226.5-93.5T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 133 93.5 226.5T480-160Z"/></svg>
+                <p class="time">10:00 - 11:00</p>
             </div>
-            <div class="interviews-given">
-              <div class="icon">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  height="24"
-                  viewBox="0 -960 960 960"
-                  width="24"
-                >
-                  <path
-                    d="M360-320h80v-120h120v-80H440v-120h-80v120H240v80h120v120ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h480q33 0 56.5 23.5T720-720v180l160-160v440L720-420v180q0 33-23.5 56.5T640-160H160Zm0-80h480v-480H160v480Zm0 0v-480 480Z"
-                  />
-                </svg>
+            </div>
+          </div>
+        </div>
+        <div class="available-jobs">
+          <h1 class="available-jobs-title">Available Jobs</h1>
+              <div class="available-jobs-card-details">
+                <h1 class="position-title">Senior Data Engineer I ( SSE - 1 )</h1>
+                <div class="company-details">
+                  <p class="company-name">Airtel India</p>
+                  <a href="airtel.com" class="company-website">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z"/></svg>
+                  <a>
+                </div>
+                <div class="job-details">
+                  <div class="work-experience">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M160-120q-33 0-56.5-23.5T80-200v-440q0-33 23.5-56.5T160-720h160v-80q0-33 23.5-56.5T400-880h160q33 0 56.5 23.5T640-800v80h160q33 0 56.5 23.5T880-640v440q0 33-23.5 56.5T800-120H160Zm0-80h640v-440H160v440Zm240-520h160v-80H400v80ZM160-200v-440 440Z"/></svg>
+                    <p class="work-experience-value">2 - 3 years</p>
+                  </div>
+                  <div class="expected-salary">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M549-120 280-400v-80h140q53 0 91.5-34.5T558-600H240v-80h306q-17-35-50.5-57.5T420-760H240v-80h480v80H590q14 17 25 37t17 43h88v80h-81q-8 85-70 142.5T420-400h-29l269 280H549Z"/></svg>
+                    <p class="expected-salary-value">10 - 15 Lacs P.A.</p>
+                  </div>
+                  <div class="work-location">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M480-480q33 0 56.5-23.5T560-560q0-33-23.5-56.5T480-640q-33 0-56.5 23.5T400-560q0 33 23.5 56.5T480-480Zm0 294q122-112 181-203.5T720-552q0-109-69.5-178.5T480-800q-101 0-170.5 69.5T240-552q0 71 59 162.5T480-186Zm0 106Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 100-79.5 217.5T480-80Zm0-480Z"/></svg>
+                    <p class="work-location-value">Gurgaon</p>
+                    </div>
+                  <div class="job-type">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M580-490q-21 0-35.5-14.5T530-540q0-21 14.5-35.5T580-590q21 0 35.5 14.5T630-540q0 21-14.5 35.5T580-490Zm-200 0q-21 0-35.5-14.5T330-540q0-21 14.5-35.5T380-590q21 0 35.5 14.5T430-540q0 21-14.5 35.5T380-490Zm100 210q-60 0-108.5-33T300-400h360q-23 54-71.5 87T480-280Zm0 160q-75 0-140.5-28.5t-114-77q-48.5-48.5-77-114T120-480q0-75 28.5-140.5t77-114q48.5-48.5 114-77T480-840q75 0 140.5 28.5t114 77q48.5 48.5 77 114T840-480q0 75-28.5 140.5t-77 114q-48.5 48.5-114 77T480-120Zm0-80q116 0 198-82t82-198q0-116-82-198t-198-82h-12q-6 0-12 2-6 6-8 13t-2 15q0 21 14.5 35.5T496-680q9 0 16.5-3t15.5-3q12 0 20 9t8 21q0 23-21.5 29.5T496-620q-45 0-77.5-32.5T386-730v-6q0-3 1-8-83 30-135 101t-52 163q0 116 82 198t198 82Zm0-280Z"/></svg>
+                    <p class="job-type-value">Internship</p>
+                  </div>
+                </div>
+                <div class="job-description">
+                  <p class="job-description-value">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Quisquam, voluptatum. Lorem ipsum dolor sit amet consectetur
+                    adipisicing elit. Quisquam, voluptatum. Lorem ipsum dolor
+                    sit amet consectetur adipisicing elit. Quisquam, voluptatum.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Quisquam, voluptatum. Lorem ipsum dolor sit amet consectetur
+                    adipisicing elit. Quisquam, voluptatum. Lorem ipsum dolor
+                    sit amet consectetur adipisicing elit. Quisquam, voluptatum.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Quisquam, voluptatum. Lorem ipsum dolor sit amet consectetur
+                    adipisicing elit. Quisquam, voluptatum. Lorem ipsum dolor
+                    sit amet consectetur adipisicing elit. Quisquam, voluptatum.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Quisquam, voluptatum. Lorem ipsum dolor sit amet consectetur
+                    adipisicing elit. Quisquam, voluptatum. Lorem ipsum dolor
+                    sit amet consectetur adipisicing elit. Quisquam, voluptatum.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Quisquam, voluptatum. Lorem ipsum dolor sit amet consectetur
+                    adipisicing elit. Quisquam, voluptatum. Lorem ipsum dolor
+                    sit amet consectetur adipisicing elit. Quisquam, voluptatum.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Quisquam, voluptatum.
+                  </p>
+                </div>
+                <div class="application-details">
+                  <div class="application-posted-on">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z"/></svg>
+                    <p class="application-posted-on-value">10th August, 2021</p>
+                    </div>
+
+                  <div class="applicants-count">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M0-240v-63q0-43 44-70t116-27q13 0 25 .5t23 2.5q-14 21-21 44t-7 48v65H0Zm240 0v-65q0-32 17.5-58.5T307-410q32-20 76.5-30t96.5-10q53 0 97.5 10t76.5 30q32 20 49 46.5t17 58.5v65H240Zm540 0v-65q0-26-6.5-49T754-397q11-2 22.5-2.5t23.5-.5q72 0 116 26.5t44 70.5v63H780Zm-455-80h311q-10-20-55.5-35T480-370q-55 0-100.5 15T325-320ZM160-440q-33 0-56.5-23.5T80-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T160-440Zm640 0q-33 0-56.5-23.5T720-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T800-440Zm-320-40q-50 0-85-35t-35-85q0-51 35-85.5t85-34.5q51 0 85.5 34.5T600-600q0 50-34.5 85T480-480Zm0-80q17 0 28.5-11.5T520-600q0-17-11.5-28.5T480-640q-17 0-28.5 11.5T440-600q0 17 11.5 28.5T480-560Zm1 240Zm-1-280Z"/></svg>
+                    <p class="applicants">242 Applicants</p>
+                  </div>
+                </div>
               </div>
-              <p class="data-value">00</p>
-              <p class="highlight">Jobs Interviewd</p>
-            </div>
-          </div>
-          <div class="upcoming-interviews">
-          </div>
-        </section>
+              <div class="available-jobs-card-details">
+                <h1 class="position">Senior Data Engineer I ( SSE - 1 )</h1>
+                <div class="company-details">
+                  <p class="company-name">Airtel India</p>
+                  <a href="airtel.com" class="company-website">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z"/></svg>
+                  <a>
+                </div>
+                <div class="job-details">
+                  <div class="work-experience">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M160-120q-33 0-56.5-23.5T80-200v-440q0-33 23.5-56.5T160-720h160v-80q0-33 23.5-56.5T400-880h160q33 0 56.5 23.5T640-800v80h160q33 0 56.5 23.5T880-640v440q0 33-23.5 56.5T800-120H160Zm0-80h640v-440H160v440Zm240-520h160v-80H400v80ZM160-200v-440 440Z"/></svg>
+                    <p class="work-experience-value">2 - 3 years</p>
+                  </div>
+                  <div class="expected-salary">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M549-120 280-400v-80h140q53 0 91.5-34.5T558-600H240v-80h306q-17-35-50.5-57.5T420-760H240v-80h480v80H590q14 17 25 37t17 43h88v80h-81q-8 85-70 142.5T420-400h-29l269 280H549Z"/></svg>
+                    <p class="expected-salary-value">10 - 15 Lacs P.A.</p>
+                  </div>
+                  <div class="work-location">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M480-480q33 0 56.5-23.5T560-560q0-33-23.5-56.5T480-640q-33 0-56.5 23.5T400-560q0 33 23.5 56.5T480-480Zm0 294q122-112 181-203.5T720-552q0-109-69.5-178.5T480-800q-101 0-170.5 69.5T240-552q0 71 59 162.5T480-186Zm0 106Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 100-79.5 217.5T480-80Zm0-480Z"/></svg>
+                    <p class="work-location-value">Gurgaon</p>
+                    </div>
+                  <div class="job-type">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M360-390q-21 0-35.5-14.5T310-440q0-21 14.5-35.5T360-490q21 0 35.5 14.5T410-440q0 21-14.5 35.5T360-390Zm240 0q-21 0-35.5-14.5T550-440q0-21 14.5-35.5T600-490q21 0 35.5 14.5T650-440q0 21-14.5 35.5T600-390ZM480-160q134 0 227-93t93-227q0-24-3-46.5T786-570q-21 5-42 7.5t-44 2.5q-91 0-172-39T390-708q-32 78-91.5 135.5T160-486v6q0 134 93 227t227 93Zm0 80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm-54-715q42 70 114 112.5T700-640q14 0 27-1.5t27-3.5q-42-70-114-112.5T480-800q-14 0-27 1.5t-27 3.5ZM177-581q51-29 89-75t57-103q-51 29-89 75t-57 103Zm249-214Zm-103 36Z"/></svg>                    <p class="job-type-value">Full-Time</p>
+                  </div>
+                </div>
+                <div class="job-description">
+                  <p class="job-description-value">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Quisquam, voluptatum. Lorem ipsum dolor sit amet consectetur
+                    adipisicing elit. Quisquam, voluptatum. Lorem ipsum dolor
+                    sit amet consectetur adipisicing elit. Quisquam, voluptatum.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Quisquam, voluptatum. Lorem ipsum dolor sit amet consectetur
+                    adipisicing elit. Quisquam, voluptatum. Lorem ipsum dolor
+                    sit amet consectetur adipisicing elit. Quisquam, voluptatum.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Quisquam, voluptatum. Lorem ipsum dolor sit amet consectetur
+                    adipisicing elit. Quisquam, voluptatum. Lorem ipsum dolor
+                    sit amet consectetur adipisicing elit. Quisquam, voluptatum.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Quisquam, voluptatum. Lorem ipsum dolor sit amet consectetur
+                    adipisicing elit. Quisquam, voluptatum. Lorem ipsum dolor
+                    sit amet consectetur adipisicing elit. Quisquam, voluptatum.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Quisquam, voluptatum. Lorem ipsum dolor sit amet consectetur
+                    adipisicing elit. Quisquam, voluptatum. Lorem ipsum dolor
+                    sit amet consectetur adipisicing elit. Quisquam, voluptatum.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Quisquam, voluptatum.
+                  </p>
+                </div>
+                <div class="application-details">
+                  <div class="application-posted-on">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M200-80q-33 0-56.5-23.5T120-160v-560q0-33 23.5-56.5T200-800h40v-80h80v80h320v-80h80v80h40q33 0 56.5 23.5T840-720v560q0 33-23.5 56.5T760-80H200Zm0-80h560v-400H200v400Zm0-480h560v-80H200v80Zm0 0v-80 80Zm280 240q-17 0-28.5-11.5T440-440q0-17 11.5-28.5T480-480q17 0 28.5 11.5T520-440q0 17-11.5 28.5T480-400Zm-160 0q-17 0-28.5-11.5T280-440q0-17 11.5-28.5T320-480q17 0 28.5 11.5T360-440q0 17-11.5 28.5T320-400Zm320 0q-17 0-28.5-11.5T600-440q0-17 11.5-28.5T640-480q17 0 28.5 11.5T680-440q0 17-11.5 28.5T640-400ZM480-240q-17 0-28.5-11.5T440-280q0-17 11.5-28.5T480-320q17 0 28.5 11.5T520-280q0 17-11.5 28.5T480-240Zm-160 0q-17 0-28.5-11.5T280-280q0-17 11.5-28.5T320-320q17 0 28.5 11.5T360-280q0 17-11.5 28.5T320-240Zm320 0q-17 0-28.5-11.5T600-280q0-17 11.5-28.5T640-320q17 0 28.5 11.5T680-280q0 17-11.5 28.5T640-240Z"/></svg>
+                    <p class="application-posted-on-value">10th August, 2021</p>
+                    </div>
+
+                  <div class="applicants-count">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M0-240v-63q0-43 44-70t116-27q13 0 25 .5t23 2.5q-14 21-21 44t-7 48v65H0Zm240 0v-65q0-32 17.5-58.5T307-410q32-20 76.5-30t96.5-10q53 0 97.5 10t76.5 30q32 20 49 46.5t17 58.5v65H240Zm540 0v-65q0-26-6.5-49T754-397q11-2 22.5-2.5t23.5-.5q72 0 116 26.5t44 70.5v63H780Zm-455-80h311q-10-20-55.5-35T480-370q-55 0-100.5 15T325-320ZM160-440q-33 0-56.5-23.5T80-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T160-440Zm640 0q-33 0-56.5-23.5T720-520q0-34 23.5-57t56.5-23q34 0 57 23t23 57q0 33-23 56.5T800-440Zm-320-40q-50 0-85-35t-35-85q0-51 35-85.5t85-34.5q51 0 85.5 34.5T600-600q0 50-34.5 85T480-480Zm0-80q17 0 28.5-11.5T520-600q0-17-11.5-28.5T480-640q-17 0-28.5 11.5T440-600q0 17 11.5 28.5T480-560Zm1 240Zm-1-280Z"/></svg>
+                    <p class="applicants">242 Applicants</p>
+                  </div>
+                </div>
+              </div>
+
+              
+
+
+
+
+
+              
+                
+            
+        </div>
       </section>
     </main>
 

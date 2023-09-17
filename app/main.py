@@ -9,6 +9,10 @@ from flask_session import Session
 from flask_pywebpush import WebPush, WebPushException
 import secrets
 import redis
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
+print(os.path.dirname(os.path.realpath(__file__)))
 
 load_dotenv()
 

@@ -8,6 +8,7 @@ from pymongo import MongoClient
 from flask_session import Session
 from flask_pywebpush import WebPush, WebPushException
 import secrets
+import redis
 
 load_dotenv()
 
@@ -30,7 +31,10 @@ MONGODB_DB = MONGODB_URI["KRMU"]
 
 # Setting up session
 app.config["SESSION_PERMANENT"] = True
-app.config["SESSION_TYPE"] = "filesystem"
+app.config["SESSION_TYPE"] = "redis"
+app.config["SESSION_REDIS"] = redis.from_url(
+    f"redis://default:{os.getenv('REDIS_PASSWORD')}@redis-15560.c264.ap-south-1-1.ec2.cloud.redislabs.com:15560"
+)
 Session(app)
 
 # Setting up rate limiter
@@ -261,7 +265,6 @@ def push_notification_subscribe():
     if not session.get("logged_in"):
         return jsonify({"success": False, "message": "User not logged in"}), 400
     data = request.get_json()
-    print(data)
     if data is None:
         return jsonify({"success": False, "message": "Invalid subscription data"}), 400
     if data['subscription'] is None:

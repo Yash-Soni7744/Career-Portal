@@ -5,3 +5,4 @@ Flask-pyWebPush
 python-dotenv
 pymongo
 bcrypt
+redis

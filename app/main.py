@@ -1,5 +1,4 @@
 import os
-import functions
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, session
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -9,9 +8,38 @@ from flask_session import Session
 from flask_pywebpush import WebPush, WebPushException
 import secrets
 import redis
-import sys
+import bcrypt
+import datetime
 
-sys.path.insert(0, '/app/')
+# Beginning Of Helper Functions
+
+
+def hash_password(password):
+    salt = bcrypt.gensalt().decode('utf-8')
+    hashed_password = bcrypt.hashpw(
+        password.encode('utf-8'), salt.encode('utf-8'))
+
+    return hashed_password.decode('utf-8')
+
+
+def verify_hashed_password(password, hashed_password):
+    return bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8'))
+
+def get_current_timestamp():
+    # Returning a UTC timestamp
+    return datetime.datetime.utcnow().timestamp()
+
+def send_email(email, email_type):
+    return True
+
+def send_notification(email, notification_title, notification_body):
+    pass
+
+def verify_recaptcha(recaptcha_token):
+    return True
+
+# End Of Helper Functions
+
 
 load_dotenv()
 
@@ -99,7 +127,7 @@ def signup():
         if len(user_password) < 8:
             return jsonify({"success": False, "message": "Password must be at least 8 characters long"}), 400
 
-        if not functions.verify_recaptcha(recaptcha_token):
+        if not verify_recaptcha(recaptcha_token):
             return jsonify({"success": False, "message": "Suspicious activity detected, try again later or contact support"}), 400
 
         if MONGODB_DB["student_info"].find_one({"email": user_email}) is None:
@@ -108,19 +136,19 @@ def signup():
         if MONGODB_DB["users"].find_one({"user_email": user_email}):
             return jsonify({"success": False, "message": "This email address is already registered with us, try logging in"}), 400
 
-        hashed_password = functions.hash_password(user_password)
+        hashed_password = hash_password(user_password)
 
-        if not functions.send_email(user_email, "verify_new_user"):
+        if not send_email(user_email, "verify_new_user"):
             return jsonify({"success": False, "message": "Unable to send verification email, try again later or contact support"}), 500
 
-        functions.send_notification(
+        send_notification(
             user_email, "Welcome to KRMU", "Welcome to KRMU's official app. We hope you have a great experience.")
 
         MONGODB_DB["users"].insert_one({
             "user_email": user_email,
             "user_hashed_password": hashed_password,
             "email_verified": True,
-            "user_created_at": functions.get_current_timestamp(),
+            "user_created_at": get_current_timestamp(),
             "user_role": "student",
             "user_profile": {
                 "user_name": MONGODB_DB["student_info"].find_one({"email": user_email})["name"] if MONGODB_DB["student_info"].find_one({"email": user_email}) else user_email.split("@")[0],
@@ -134,7 +162,7 @@ def signup():
                     "notification_id": 1,
                     "notification_title": "Welcome to KRMU",
                     "notification_body": "Welcome to KRMU's official app. We hope you have a great experience.",
-                    "notification_created_at": functions.get_current_timestamp(),
+                    "notification_created_at": get_current_timestamp(),
                     "notification_read": False
                 }
             ]
@@ -178,13 +206,13 @@ def signin():
 
         session["user_email"] = user_email
 
-        if not functions.verify_recaptcha(recaptcha_token):
+        if not verify_recaptcha(recaptcha_token):
             return jsonify({"success": False, "message": "Suspicious activity detected, try again later or contact support"}), 400
 
         if MONGODB_DB["users"].find_one({"user_email": user_email}) is None:
             return jsonify({"success": False, "message": "This email address is not registered with us, try signing up"}), 400
 
-        if not functions.verify_hashed_password(user_password, MONGODB_DB["users"].find_one({"user_email": user_email})["user_hashed_password"]):
+        if not verify_hashed_password(user_password, MONGODB_DB["users"].find_one({"user_email": user_email})["user_hashed_password"]):
             return jsonify({"success": False, "message": "Incorrect email address or password combination"}), 400
 
         if not MONGODB_DB["users"].find_one({"user_email": user_email})["email_verified"]:
@@ -222,11 +250,11 @@ def send_notification():
     link = request.args.get("link")
 
     notification = {
-        "notification_id": functions.get_current_timestamp(),
+        "notification_id": get_current_timestamp(),
         "notification_title": title,
         "notification_body": body,
         "notification_link": link,
-        "notification_created_at": functions.get_current_timestamp(),
+        "notification_created_at": get_current_timestamp(),
         "id": secrets.token_hex(16),
         "ttl": 86400,
     }
@@ -310,7 +338,7 @@ def create_job_posting():
             "job_salary": data["job_salary"],
             "job_company": data["job_company"],
             "job_link": data["job_link"],
-            "job_created_at": functions.get_current_timestamp()
+            "job_created_at": get_current_timestamp()
         })
         for user in MONGODB_DB["users"].find():
             return jsonify({"success": True, "message": "Job posting created successfully"}), 200

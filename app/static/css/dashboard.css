@@ -286,14 +286,14 @@ main header .user-name {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    height: 200px;
+    height: 250px;
     padding: 20px;
     background-color: #FFFFFF;
     box-shadow: 5px 6px 18px 0px #00000040;
     border-radius: 20px;
     gap: 20px;
-    min-width: 200px;
-    flex: 1 0 30%;
+    min-width: 150px;
+    flex: 1 0 25%;
 }
 
 .user-statistics .jobs-applied {
@@ -356,7 +356,7 @@ main header .user-name {
     align-items: self-start;
     justify-content: start;
     padding: 20px;
-    height: 200px;
+    height: 250px;
     background-color: #FFFFFF;
     box-shadow: 5px 6px 18px 0px #00000040;
     border-radius: 20px;
@@ -421,8 +421,9 @@ main header .user-name {
     width: 100%;
     padding: 0 50px;
     overflow: visible;
-    margin-top: 50px;
     position: relative;
+    height: 200px;
+    margin-top: 10px;
 
 }
 
@@ -441,7 +442,7 @@ main header .user-name {
     transition: all 0.3s ease-in-out;
     display: none;
     transition: all 0.3s ease-in-out;
-    height: 80px;
+    height: 100px;
 }
 
 .upcoming-interviews-card-details .company-name {

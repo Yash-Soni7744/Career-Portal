@@ -1,15 +1,15 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, session
+import datetime
+import secrets
+from flask import Flask, render_template, request, redirect, url_for, jsonify, session
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from dotenv import load_dotenv
 from pymongo import MongoClient
 from flask_session import Session
 from flask_pywebpush import WebPush, WebPushException
-import secrets
 import redis
 import bcrypt
-import datetime
 
 # Beginning Of Helper Functions
 
@@ -25,15 +25,15 @@ def hash_password(password):
 def verify_hashed_password(password, hashed_password):
     return bcrypt.checkpw(password.encode('utf-8'), hashed_password.encode('utf-8'))
 
+
 def get_current_timestamp():
     # Returning a UTC timestamp
     return datetime.datetime.utcnow().timestamp()
 
+
 def send_email(email, email_type):
     return True
 
-def send_notification(email, notification_title, notification_body):
-    pass
 
 def verify_recaptcha(recaptcha_token):
     return True
@@ -141,9 +141,6 @@ def signup():
         if not send_email(user_email, "verify_new_user"):
             return jsonify({"success": False, "message": "Unable to send verification email, try again later or contact support"}), 500
 
-        send_notification(
-            user_email, "Welcome to KRMU", "Welcome to KRMU's official app. We hope you have a great experience.")
-
         MONGODB_DB["users"].insert_one({
             "user_email": user_email,
             "user_hashed_password": hashed_password,
@@ -235,6 +232,11 @@ def signin():
 @app.route("/dashboard")
 @limiter.limit("10 per minute")
 def dashboard():
+    """ This function handles the logic for the dashboard page
+
+    Returns:
+        _type_: flask.render_template or flask.redirect
+    """
     if not session.get("logged_in"):
         return redirect(url_for("signin"))
     return render_template("dashboard.html")
@@ -243,6 +245,12 @@ def dashboard():
 @app.route("/send-notification", methods=["GET", "POST"])
 @limiter.limit("10 per minute")
 def send_notification():
+    """ This function handles the logic for sending a notification to all users
+
+    Returns:
+        _type_: flask.jsonify
+    """
+
     if not session.get("logged_in"):
         return redirect(url_for("signin"))
     title = request.args.get("title")
@@ -267,9 +275,9 @@ def send_notification():
             for subscription in user["user_push_subscription"]:
                 try:
                     push.send(subscription['subscription'], notification)
-                except WebPushException as exc:
-                    print(exc)
-                    pass
+                except WebPushException:
+                    MONGODB_DB["users"].update_one({"user_email": user["user_email"]}, {"$pull": {
+                        "user_push_subscription": {"notification-identifier": subscription["notification-identifier"]}}})
     return jsonify({"success": True, "message": "Notification sent successfully"}), 200
 
 
@@ -293,6 +301,11 @@ def logout():
 @app.route("/api/push-notification/subscribe", methods=["POST"])
 @limiter.limit("10 per minute")
 def push_notification_subscribe():
+    """ This function handles the logic for subscribing a user to push notifications
+
+    Returns:
+        _type_: flask.jsonify
+    """
     if not session.get("logged_in"):
         return jsonify({"success": False, "message": "User not logged in"}), 400
     data = request.get_json()
@@ -317,10 +330,11 @@ def push_notification_subscribe():
 @app.route("/create-job-posting", methods=["GET", "POST"])
 @limiter.limit("10 per minute")
 def create_job_posting():
-    if not session.get("logged_in"):
-        return redirect(url_for("signin"))
-    if session.get("user_role") != "admin":
-        return redirect(url_for("index"))
+    """ This function handles the logic for creating a new job posting
+
+      Returns:
+          _type_: flask.render_template or flask.redirect or flask.jsonify
+    """
     if request.method == "GET":
         return render_template("create_job_posting.html")
     else:
@@ -329,8 +343,6 @@ def create_job_posting():
             return jsonify({"success": False, "message": "Invalid job posting data"}), 400
         if not data["job_title"] or not data["job_description"] or not data["job_location"] or not data["job_salary"] or not data["job_company"] or not data["job_link"]:
             return jsonify({"success": False, "message": "Invalid job posting data"}), 400
-        if MONGODB_DB["job_postings"].find_one({"job_title": data["job_title"]}) is not None:
-            return jsonify({"success": False, "message": "Job posting already exists"}), 400
         MONGODB_DB["job_postings"].insert_one({
             "job_title": data["job_title"],
             "job_description": data["job_description"],
@@ -338,10 +350,11 @@ def create_job_posting():
             "job_salary": data["job_salary"],
             "job_company": data["job_company"],
             "job_link": data["job_link"],
-            "job_created_at": get_current_timestamp()
+            "job_created_at": get_current_timestamp(),
+            'verified': False,
+            'public': False,
         })
-        for user in MONGODB_DB["users"].find():
-            return jsonify({"success": True, "message": "Job posting created successfully"}), 200
+        return jsonify({"success": True, "message": "Job posting created successfully"}), 200
 
 
 if __name__ == "__main__":

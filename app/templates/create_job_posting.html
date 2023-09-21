@@ -1,0 +1,75 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Job Posting | KRMU</title>
+    <meta name="author" content="SOET | K.R. Mangalam University">
+    <meta name="description"
+        content="The best way to get your dream candidate is to create a job posting on KRMU Carrer Portal.">
+    <meta name="keywords"
+        content="K.R. Mangalam University Carrer Portal, KRMU, K.R. Mangalam University, KRMU Carrer Portal, KRMU Placement Portal, KRMU Placement Cell, KRMU Training and Placement Cell, KRMU TPC, KRMU TnP Cell, KRMU TnP, KRMU TPC, KRMU Training and Placement, KRMU Training and Placement Cell, KRMU Placement, KRMU Placement Cell, KRMU Placement Portal">
+
+    <link rel="stylesheet" href="/static/css/base.css" />
+    <link rel="stylesheet" href="/static/css/create_job_posting.css" />
+    <script src="https://www.google.com/recaptcha/api.js?render=6LfTQOgnAAAAAPUKwxk5C_ZQNIi__k7HGTzbi3Yw"
+        defer></script>
+    <script src="/static/js/recaptcha.js" defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script src="//geodata.solutions/includes/countrystatecity.js" defer></script>
+    <link rel="icon" href="/static/images/favicon.ico " type="image/x-icon">
+</head>
+
+<body>
+    <main>
+        <div class="logo-container">
+            <img src="/static/images/logo.svg" alt="KRMU Logo" class="logo" height="300px" width="300px">
+        </div>
+        <div class="job-posting-container">
+            <h1 class="heading">New Job Posting</h1>
+            <form action="/create_job_posting" method="POST" enctype="multipart/form-data">
+                <input type="text" name="Oraganization Name" id="organization-name"
+                    placeholder="Company Name / Organization name" required />
+                <input type="url" name="Website" id="website" placeholder="Company / Oraganization website" required />
+                <file class="file">
+                    <input type="file" name="Logo" id="logo" accept="image/*" required />
+                    <label for="logo">Upload Logo</label>
+                </file>
+                <input tpe="url" name="Linkedin" id="linkedin" placeholder="Linkedin Profile" required />
+                <input type="email" name="Email" id="email" placeholder="Contact Email" required />
+                <input type="tel" name="Contact Number" id="contact-number" placeholder="Contact Number" required />
+                <input type="text" name="Contact Person" id="contact-person" placeholder="Contact Person" required />                
+                
+                <input type="text" name="Job Title" id="job-title" placeholder="Job Title" required />
+                <input type="text" name="Job Description" id="job-description" placeholder="Job Description" required
+                    min="200" />
+                <input type="text" name="Job Location" id="job-location" placeholder="Job Location" required />
+                <select>
+                    <option value="Full Time">Full-Time</option>
+                    <option value="Part Time">Part-Time</option>
+                    <option value="Internship">Internship</option>
+                    <option value="Freelance">Freelance</option>
+                </select>
+                <input type="text" name="Minimum Salary" id="minimum-salary" placeholder="Minimum Salary" required />
+                <input type="text" name="Maximum Salary" id="maximum-salary" placeholder="Maximum Salary" required />
+                <input type="text" name="Minimum Experience" id="minimum-experience" placeholder="Minimum Experience"
+                    required />
+                <input type="text" name="Preffered Experience" id="preffered-experience" placeholder="Preffered Experience"
+                    required />
+                <input type="text" name="Minimum Qualification" id="minimum-qualification"
+                    placeholder="Minimum Qualification" required />
+                <input type="text" name="Job Category" id="job-category" placeholder="Job Category eg. IT, CS, etc." 
+                    required />
+                    
+            </form>
+            
+        </div>
+
+    </main>
+
+</body>
+
+</html>

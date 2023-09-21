@@ -20,7 +20,7 @@ function submitResponse() {
           return;
         }
 
-        if (email.split("@")[1] != "krmu.edu.in") {
+        if (email.split("@")[1].toLowerCase() != "krmu.edu.in") {
           alertText.classList.add("error-text");
           alertText.innerHTML =
             "Only university email addresses are allowed";

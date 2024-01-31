@@ -64,7 +64,7 @@ MONGODB_DB = MONGODB_URI["KRMU"]
 app.config["SESSION_PERMANENT"] = True
 app.config["SESSION_TYPE"] = "redis"
 app.config["SESSION_REDIS"] = redis.from_url(
-    f"redis://default:{os.getenv('REDIS_PASSWORD')}@redis-15560.c264.ap-south-1-1.ec2.cloud.redislabs.com:15560"
+    os.getenv('REDIS_URI')
 )
 Session(app)
 

@@ -1,0 +1,101 @@
+:root {
+        --main-color: #7234FE;
+}
+.container{
+        max-width: 100%;
+}
+.navbar-brand,
+.navbar-nav .nav-link.active,
+.navbar-nav .nav-link.show,
+.nav-link,
+.nav-link.disabled {
+        color: #fff;
+}
+
+.background {
+        background-color: var(--main-color);
+}
+.plus-icon{
+        justify-content: center;
+        align-items: center;
+        width: 3vw;
+        margin: 10vw 0vw 0vw -3vw;
+        cursor: pointer;
+        height: 3vw;
+        display: flex;
+        border-radius: 50%;
+        background: var(--main-color);
+        border: 3px solid white;
+}
+.form-container {
+        display: flex;
+        gap: 10vw;
+}
+
+.btn-primary {
+        background-color: var(--main-color);
+}
+
+.form-region {
+        width: 60vw;
+}
+
+.job {
+        display: flex;
+        gap: 0.8vw;
+}
+
+.btn,
+.btn-secondary {
+        --bs-btn-bg: #fff;
+        --bs-btn-border-color: var(--main-color);
+        --bs-btn-hover-color: #fff;
+        --bs-btn-hover-bg: var(--main-color);
+        color: var(--main-color);
+}
+
+.submit-color {
+        color: #fff;
+}
+
+.row1 {
+        width: auto;
+        display: flex;
+        gap: 0.8vw;
+}
+
+.row2 {
+        display: flex;
+        gap: 0.8vw;
+}
+.work-type{
+        position: sticky;
+        top: 2.5vw;
+        width: 30vw;
+        height: 100%;
+        box-shadow: 1px 1px 5px 2px rgba(160, 160, 160, 0.2);
+        border-radius: 0.5vw;
+        align-items: center;
+}
+.work-region{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+}
+.form-area{
+        box-shadow: 1px 1px 5px 2px rgba(160, 160, 160, 0.2);
+        border-radius: 0.5vw;
+        align-items: center;
+}
+input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 20px;
+        height: 20px;
+        background: var(--main-color);
+        border-radius: 50%;
+        cursor: pointer;
+}       
+.form-check-input:checked{
+        background-color: var(--main-color);
+        border-color: var(--main-color);
+}

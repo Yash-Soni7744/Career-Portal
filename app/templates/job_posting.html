@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>create post</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <link href="../static/css/job-posting.css" rel="stylesheet" />
+</head>
+
+<body>
+  <main>
+    <nav class="navbar navbar-expand-lg background">
+      <div class="container-fluid ">
+        <a class="navbar-brand" href="#">L O G O</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Contact</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Find Job</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Sign Up</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container-sm" style="max-width: 100%; padding: 0; height: 20vw; background-color:#7234FE;">
+      <div class="container" style="display: flex; flex-direction: column; align-content: center; justify-content: center;">
+        <div class="main-text" style="text-align: center; color: #ffffff; ">
+          <br>
+          <h1 style="font-size: 5vw;"> We’re Hiring </h1>
+        </div>
+        <br>
+        <div class="secondary-text" style="text-align: center; color: #ffffff;">
+          <h4> Post and get the in-demand jobs </h4>
+        </div>
+      </div>
+    </div>
+    <div style="height: 10vw; display: flex; align-items: center; justify-content: center;">
+      <!-- <marquee behavior="scroll" direction="left" scrollamount="10 " style="font-size: 8vw; color: rgb(204, 204, 204);"> Google Microsoft Faang  Netflix  Yash</marquee> -->
+    </div>
+    <section class="container">
+      <div style="max-width: 100%; display: flex; align-items: center; justify-content: center;">
+        <h1> Create Post</h1>
+      </div>
+      <br>
+      <br>
+      <div class="form-container">
+        <div class="work-type">
+          <div class="work-region" style="margin: 2vw;">
+
+            <h4>Work Type</h4>
+            <br>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+              <label class="form-check-label" for="flexCheckChecked">
+                Remote
+              </label>
+            </div>
+            <br>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+              <label class="form-check-label" for="flexCheckChecked">
+                Freelance
+              </label>
+            </div>
+            <br>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+              <label class="form-check-label" for="flexCheckChecked">
+                Full-time
+              </label>
+            </div>
+            <br>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+              <label class="form-check-label" for="flexCheckChecked">
+                Internship
+              </label>
+            </div>
+            <br>
+            <br>
+            <h4> Location</h4>
+            <br>
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label">Organisation Name</label>
+              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label">Organisation Name</label>
+              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            </div>
+            <button type="submit" class="btn submit-color btn-primary">Submit</button>
+          </div>
+        </div>
+        <div class="form-area">
+          <form class="form-region" style="margin: 2vw;">
+            <div class="image-div" style="display: flex; justify-content: flex-end; ">
+              <img src="../static/images/logo-circular.png" alt="..." class="img-thumbnail" style="width: 14vw; height: 14vw; border: none;" >
+              <div class="plus-icon" >
+                <p style="color: white; margin-top: 0.6vw; font-size: 2vw;">+</p>
+              </div>
+            </div>
+            <h1>Job Details</h1>
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label">Organisation Name</label>
+              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+
+            </div>
+            <div class="mb-3">
+              <label for="exampleInputtext1" class="form-label">Job Category</label>
+              <div class="job">
+                <input type="text" class="form-control" id="exampleInputtext1">
+                <div class="dropdown">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <div class="row1">
+                <div style="width: 100%;">
+                  <label for="exampleInputtext1" class="form-label">Position</label>
+                  <input type="text" class="form-control" id="exampleInputtext1" style="width: 100%;">
+                </div>
+                <div style="width: 100%;">
+                  <label for="exampleInputtext1" class="form-label">Openings</label>
+                  <input type="text" class="form-control" style="width: 100% ;" id="exampleInputtext1">
+                </div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <div class="row2">
+                <div style="width: 100%;">
+                  <label for="exampleInputtext1" class="form-label">Experience</label>
+                  <input type="text" class="form-control" id="exampleInputtext1" style="width: 100%;">
+                </div>
+                <div style="width: 100%;">
+                  <label for="exampleInputtext1" class="form-label">Job Timing</label>
+                  <input type="text" class="form-control" style="width: 100%;" id="exampleInputtext1">
+                </div>
+              </div>
+            </div>
+            <div class="mb-3 form-check">
+              <input type="checkbox" class="form-check-input" id="exampleCheck1">
+              <label class="form-check-label" for="exampleCheck1">Check me out</label>
+            </div>
+            <br>
+            <br>
+            <div class="salary-container">
+              <h1> Salary Range</h1>
+              <br>
+              <div style="display: flex; gap: 2vw;">
+                <div class="range">
+                  <input type="range" style="width: 25.5vw; height: 3vw;" class="form-range" id="customRange1" />
+                </div>
+                <div>
+                  <input type="text" class="form-control" style="width: auto; height: 3vw;" id="exampleInputtext1">
+                </div>
+              </div>
+            </div>
+            <div class="job-description">
+              <br>
+              <br>
+              <h1> Job Description </h1>
+
+              <div class="mb-3">
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+              </div>
+            </div>
+            <button type="submit" class="btn submit-color btn-primary">Submit</button>
+          </form>
+        </div>
+      </div>
+
+
+    </section>
+  </main>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script> -->
+</body>
+
+</html>

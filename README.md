@@ -1,1 +1,1 @@
-# This is a career portal for K.R. Mangalam University
+# This is a career portal for K.R. Mangalam University, Sohna, Gurugram
